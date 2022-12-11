@@ -48,11 +48,7 @@ const AnalyticsCongratulations = () => {
             <Typography sx={{ mb: 4.5 }} variant='body2'>
               Check your smart contracts, live safer.
             </Typography>
-            <Button variant='contained'>Check Contract</Button>
           </Grid>
-          <StyledGrid item xs={12} sm={6}>
-            {/* <Img alt='Congratulations John' src={`/images/cards/illustration-john-${theme.palette.mode}.png`} /> */}
-          </StyledGrid>
         </Grid>
       </CardContent>
     </Card>

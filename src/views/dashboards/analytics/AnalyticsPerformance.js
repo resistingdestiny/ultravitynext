@@ -11,7 +11,7 @@ import ReactApexcharts from 'src/@core/components/react-apexcharts'
 const series = [
   {
     name: 'Net Worth',
-    data: [110, 72, 62, 65, 100, 75]
+    data: [110, 72, 62, 65, 100]
   }
 ]
 
@@ -39,19 +39,20 @@ const AnalyticsPerformance = () => {
       }
     },
     fill: {
-      type: 'gradient',
-      gradient: {
-        shade: 'dark',
+      type: 'solid',
+      color: ['#9400D3']
+      /* gradient: {
+        color: ['#9400D3'] */
+      /* shade: 'dark',
         gradientToColors: [theme.palette.warning.main, theme.palette.primary.main],
         shadeIntensity: 1,
         type: 'vertical',
         opacityFrom: 1,
         opacityTo: 0.9,
-        stops: [0, 100]
-      }
+        stops: [0, 100] }*/
     },
-    colors: [theme.palette.warning.main, theme.palette.primary.main],
-    labels: ['Immutability', 'Reliability', 'Credibility', 'Longevity', 'Other'],
+    colors: ['#9400D3'],
+    labels: ['Immutability', 'Reliability', 'Credibility', 'Longevity', 'Popularity'],
     markers: { size: 0 },
     xaxis: {
       labels: {
@@ -91,7 +92,6 @@ const AnalyticsPerformance = () => {
         }}
       >
         <ReactApexcharts type='radar' height={278} series={series} options={options} />
-        0x1e77d1aa9f9d38f7ccc0e868cd4e4a4f5a7b5442
       </CardContent>
     </Card>
   )
