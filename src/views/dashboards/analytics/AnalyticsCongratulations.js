@@ -36,7 +36,7 @@ const AnalyticsCongratulations = () => {
     <Card sx={{ position: 'relative' }}>
       <CardContent sx={{ p: theme => `${theme.spacing(6.75, 7.5)} !important` }}>
         <Grid container spacing={6}>
-          <Grid item xs={12} sm={6}>
+          <Grid item xs={12} sm={12}>
             <Typography variant='h5' sx={{ mb: 4.5 }}>
               Welcome{' '}
               <Box component='span' sx={{ fontWeight: 'bold' }}>
@@ -47,6 +47,12 @@ const AnalyticsCongratulations = () => {
             <Typography variant='body2'></Typography>
             <Typography sx={{ mb: 4.5 }} variant='body2'>
               Check your smart contracts, live safer.
+            </Typography>
+            <Typography sx={{ mb: 4.5 }} variant='body2'>
+              Your API key is{' '}
+              <Box component='span' sx={{ fontWeight: 'bold' }}>
+                0x1234567890
+              </Box>
             </Typography>
           </Grid>
         </Grid>

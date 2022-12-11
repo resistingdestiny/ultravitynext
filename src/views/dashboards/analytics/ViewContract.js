@@ -67,15 +67,6 @@ const ViewContract = props => {
 
   return (
     <Card>
-      <CardHeader
-        title='Last Contract'
-        action={
-          <OptionsMenu
-            options={['Last 28 Days', 'Last Month', 'Last Year']}
-            iconButtonProps={{ size: 'small', className: 'card-more-options' }}
-          />
-        }
-      />
       <CardContent
         sx={{
           pt: { xs: `${theme.spacing(6)} !important`, md: `${theme.spacing(0)} !important` },

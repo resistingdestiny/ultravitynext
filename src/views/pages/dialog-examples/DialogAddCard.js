@@ -50,6 +50,7 @@ const DialogAddCard = () => {
   const handleClose = () => {
     setShow(false)
     setFocus(undefined)
+    setResJson(false)
   }
 
   const handleSubmit = async e => {
