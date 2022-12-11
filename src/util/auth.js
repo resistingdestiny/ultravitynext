@@ -21,7 +21,7 @@ import {
   sendPasswordResetEmail as authSendPasswordResetEmail,
   confirmPasswordReset as authConfirmPasswordReset
 } from 'firebase/auth'
-import { firebaseApp } from './firebase'
+import { auth } from './firebase'
 import { useUser, createUser, updateUser } from './db'
 import router from 'next/router'
 import { getFriendlyPlanId } from './prices'

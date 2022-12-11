@@ -7,7 +7,6 @@ import Link from 'next/link'
 // ** MUI Components
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
-import Divider from '@mui/material/Divider'
 import Checkbox from '@mui/material/Checkbox'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
@@ -20,9 +19,8 @@ import { styled, useTheme } from '@mui/material/styles'
 import MuiCard from '@mui/material/Card'
 import InputAdornment from '@mui/material/InputAdornment'
 import MuiFormControlLabel from '@mui/material/FormControlLabel'
-import { auth } from 'src/util/firebase.js'
-import { createUserWithEmailAndPassword } from 'firebase/auth'
-import { useRouter } from 'next/router'
+import { useAuth } from 'src/util/auth'
+import { useForm } from 'react-hook-form'
 
 // ** Icon Imports
 import Icon from 'src/@core/components/icon'
@@ -32,6 +30,9 @@ import themeConfig from 'src/configs/themeConfig'
 
 // ** Layout Import
 import BlankLayout from 'src/@core/layouts/BlankLayout'
+
+// ** Demo Imports
+import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustrationsV1'
 
 // ** Styled Components
 const Card = styled(MuiCard)(({ theme }) => ({
@@ -46,41 +47,85 @@ const FormControlLabel = styled(MuiFormControlLabel)(({ theme }) => ({
   }
 }))
 
-const Register = () => {
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [confirmPassword, setConfirmPassword] = useState('')
-  const [error, setError] = useState('')
+function AuthForm(props) {
+  const auth = useAuth()
+  const [pending, setPending] = useState(false)
+  const { handleSubmit, register, errors, getValues } = useForm()
 
-  const validatePassword = () => {
-    let isValid = true
-    if (password !== '' && confirmPassword !== '') {
-      if (password !== confirmPassword) {
-        isValid = false
-        setError('Passwords does not match')
-      }
-    }
-    return isValid
-  }
-
-  const register = e => {
-    e.preventDefault()
-    setError('')
-    if (validatePassword()) {
-      // Create a new user with email and password using firebase
-      createUserWithEmailAndPassword(auth, email, password)
-        .then(res => {
-          console.log(res.user)
+  const submitHandlersByType = {
+    signin: ({ email, pass }) => {
+      return auth.signin(email, pass).then(user => {
+        // Call auth complete handler
+        props.onAuth(user)
+      })
+    },
+    signup: ({ email, pass }) => {
+      return auth.signup(email, pass).then(user => {
+        // Call auth complete handler
+        props.onAuth(user)
+      })
+    },
+    forgotpass: ({ email }) => {
+      return auth.sendPasswordResetEmail(email).then(() => {
+        setPending(false)
+        // Show success alert message
+        props.onFormAlert({
+          type: 'success',
+          message: 'Password reset email sent'
         })
-        .catch(err => setError(err.message))
+      })
+    },
+    changepass: ({ pass }) => {
+      return auth.confirmPasswordReset(pass).then(() => {
+        setPending(false)
+        // Show success alert message
+        props.onFormAlert({
+          type: 'success',
+          message: 'Your password has been changed'
+        })
+      })
     }
-    setEmail('')
-    setPassword('')
-    setConfirmPassword('')
   }
+
+  // Handle form submission
+  const onSubmit = ({ email, pass }) => {
+    // Show pending indicator
+    setPending(true)
+
+    // Call submit handler for auth type
+    submitHandlersByType[props.type]({
+      email,
+      pass
+    }).catch(error => {
+      setPending(false)
+      // Show error alert message
+      props.onFormAlert({
+        type: 'error',
+        message: error.message
+      })
+    })
+  }
+
+  // ** States
+  const [values, setValues] = useState({
+    password: '',
+    showPassword: false
+  })
 
   // ** Hook
   const theme = useTheme()
+
+  const handleChange = prop => event => {
+    setValues({ ...values, [prop]: event.target.value })
+  }
+
+  const handleClickShowPassword = () => {
+    setValues({ ...values, showPassword: !values.showPassword })
+  }
+
+  const handleMouseDownPassword = event => {
+    event.preventDefault()
+  }
 
   return (
     <Box className='content-center'>
@@ -167,33 +212,26 @@ const Register = () => {
             </Typography>
             <Typography variant='body2'>Become more informed about your smart contracts</Typography>
           </Box>
-          <form noValidate autoComplete='off' onSubmit={register}>
-            <TextField
-              fullWidth
-              type='email'
-              label='Email'
-              sx={{ mb: 4 }}
-              value={email}
-              onChange={e => setEmail(e.target.value)}
-            />
-
+          <form noValidate autoComplete='off' onSubmit={handleSubmit(onSubmit)}>
+            <TextField fullWidth type='email' name='email' label='Email' sx={{ mb: 4 }} />
             <FormControl fullWidth>
               <InputLabel htmlFor='auth-register-password'>Password</InputLabel>
               <OutlinedInput
                 label='Password'
-                value={password}
+                value={values.password}
+                name='password'
                 id='auth-register-password'
-                onChange={e => setPassword(e.target.value)}
-                type='password'
+                onChange={handleChange('password')}
+                type={values.showPassword ? 'text' : 'password'}
                 endAdornment={
                   <InputAdornment position='end'>
                     <IconButton
                       edge='end'
-                      /* onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword} */
+                      onClick={handleClickShowPassword}
+                      onMouseDown={handleMouseDownPassword}
                       aria-label='toggle password visibility'
                     >
-                      <Icon icon={'mdi:eye-off-outline'} fontSize={20} />
+                      <Icon icon={values.showPassword ? 'mdi:eye-outline' : 'mdi:eye-off-outline'} fontSize={20} />
                     </IconButton>
                   </InputAdornment>
                 }
@@ -231,7 +269,7 @@ const Register = () => {
     </Box>
   )
 }
-Register.getLayout = page => <BlankLayout>{page}</BlankLayout>
-Register.guestGuard = true
+AuthForm.getLayout = page => <BlankLayout>{page}</BlankLayout>
+AuthForm.guestGuard = true
 
-export default Register
+export default AuthForm
