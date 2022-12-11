@@ -26,13 +26,6 @@ import Icon from 'src/@core/components/icon'
 
 // ** Third Party Imports
 import * as yup from 'yup'
-import { useForm, Controller } from 'react-hook-form'
-import { yupResolver } from '@hookform/resolvers/yup'
-
-// ** Hooks
-import { useAuth } from 'src/hooks/useAuth'
-import useBgColor from 'src/@core/hooks/useBgColor'
-import { useSettings } from 'src/@core/hooks/useSettings'
 
 // ** Configs
 import themeConfig from 'src/configs/themeConfig'
@@ -40,31 +33,9 @@ import themeConfig from 'src/configs/themeConfig'
 // ** Layout Import
 import BlankLayout from 'src/@core/layouts/BlankLayout'
 
-// ** Demo Imports
-import FooterIllustrationsV1 from 'src/views/pages/auth/FooterIllustrationsV1'
-
 // ** Styled Components
 const Card = styled(MuiCard)(({ theme }) => ({
   [theme.breakpoints.up('sm')]: { width: 450 }
-}))
-
-// ** Styled Components
-const LoginIllustrationWrapper = styled(Box)(({ theme }) => ({
-  padding: theme.spacing(20),
-  paddingRight: '0 !important',
-  [theme.breakpoints.down('lg')]: {
-    padding: theme.spacing(10)
-  }
-}))
-
-const LoginIllustration = styled('img')(({ theme }) => ({
-  maxWidth: '48rem',
-  [theme.breakpoints.down('xl')]: {
-    maxWidth: '38rem'
-  },
-  [theme.breakpoints.down('lg')]: {
-    maxWidth: '30rem'
-  }
 }))
 
 const RightWrapper = styled(Box)(({ theme }) => ({
@@ -221,9 +192,9 @@ const LoginPage = () => {
           </Box>
           <Box sx={{ mb: 6 }}>
             <Typography variant='h5' sx={{ mb: 1.5, fontWeight: 600, letterSpacing: '0.18px' }}>
-              {`Welcome to ${themeConfig.templateName}! 👋🏻`}
+              {`Welcome to ${themeConfig.templateName}`}
             </Typography>
-            <Typography variant='body2'>Please sign-in to your account and start the adventure</Typography>
+            <Typography variant='body2'>Please sign-in to your account to start checking contracts</Typography>
           </Box>
           <form noValidate autoComplete='off' onSubmit={e => e.preventDefault()}>
             <TextField autoFocus fullWidth id='email' label='Email' sx={{ mb: 4 }} />
@@ -271,46 +242,13 @@ const LoginPage = () => {
             </Button>
             <Box sx={{ display: 'flex', alignItems: 'center', flexWrap: 'wrap', justifyContent: 'center' }}>
               <Typography sx={{ mr: 2, color: 'text.secondary' }}>New on our platform?</Typography>
-              <Typography
-                component={Link}
-                href='/pages/auth/register-v1'
-                sx={{ color: 'primary.main', textDecoration: 'none' }}
-              >
+              <Typography component={Link} href='/register' sx={{ color: 'primary.main', textDecoration: 'none' }}>
                 Create an account
               </Typography>
-            </Box>
-            <Divider
-              sx={{
-                '& .MuiDivider-wrapper': { px: 4 },
-                mt: theme => `${theme.spacing(5)} !important`,
-                mb: theme => `${theme.spacing(7.5)} !important`
-              }}
-            >
-              or
-            </Divider>
-            <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-              <IconButton href='/' component={Link} sx={{ color: '#497ce2' }} onClick={e => e.preventDefault()}>
-                <Icon icon='mdi:facebook' />
-              </IconButton>
-              <IconButton href='/' component={Link} sx={{ color: '#1da1f2' }} onClick={e => e.preventDefault()}>
-                <Icon icon='mdi:twitter' />
-              </IconButton>
-              <IconButton
-                href='/'
-                component={Link}
-                onClick={e => e.preventDefault()}
-                sx={{ color: theme => (theme.palette.mode === 'light' ? '#272727' : 'grey.300') }}
-              >
-                <Icon icon='mdi:github' />
-              </IconButton>
-              <IconButton href='/' component={Link} sx={{ color: '#db4437' }} onClick={e => e.preventDefault()}>
-                <Icon icon='mdi:google' />
-              </IconButton>
             </Box>
           </form>
         </CardContent>
       </Card>
-      <FooterIllustrationsV1 />
     </Box>
   )
 }
