@@ -7,7 +7,6 @@ import Link from 'next/link'
 // ** MUI Components
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
-import Divider from '@mui/material/Divider'
 import Checkbox from '@mui/material/Checkbox'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
@@ -20,7 +19,8 @@ import { styled, useTheme } from '@mui/material/styles'
 import MuiCard from '@mui/material/Card'
 import InputAdornment from '@mui/material/InputAdornment'
 import MuiFormControlLabel from '@mui/material/FormControlLabel'
-
+import { useAuth } from 'src/util/auth'
+import { useForm } from 'react-hook-form'
 // ** Icon Imports
 import Icon from 'src/@core/components/icon'
 
@@ -46,7 +46,10 @@ const FormControlLabel = styled(MuiFormControlLabel)(({ theme }) => ({
   }
 }))
 
-const Register = () => {
+function Register(props) {
+  const auth = useAuth()
+  const [pending, setPending] = useState(false)
+  const { handleSubmit, register, errors, getValues } = useForm()
   // ** States
   const [values, setValues] = useState({
     password: '',
@@ -67,6 +70,60 @@ const Register = () => {
   const handleMouseDownPassword = event => {
     event.preventDefault()
   }
+  const submitHandlersByType = {
+    signin: ({ email, pass }) => {
+      return auth.signin(email, pass).then(user => {
+        // Call auth complete handler
+        props.onAuth(user)
+      })
+    },
+    signup: ({ email, pass }) => {
+      return auth.signup(email, pass).then(user => {
+        // Call auth complete handler
+        props.onAuth(user)
+      })
+    },
+    forgotpass: ({ email }) => {
+      return auth.sendPasswordResetEmail(email).then(() => {
+        setPending(false)
+        // Show success alert message
+        props.onFormAlert({
+          type: 'success',
+          message: 'Password reset email sent'
+        })
+      })
+    },
+    changepass: ({ pass }) => {
+      return auth.confirmPasswordReset(pass).then(() => {
+        setPending(false)
+        // Show success alert message
+        props.onFormAlert({
+          type: 'success',
+          message: 'Your password has been changed'
+        })
+      })
+    }
+  }
+
+  // Handle form submission
+  const onSubmit = ({ email, pass }) => {
+    // Show pending indicator
+    setPending(true)
+
+    // Call submit handler for auth type
+    submitHandlersByType[props.type]({
+      email,
+      pass
+    }).catch(error => {
+      setPending(false)
+      // Show error alert message
+      props.onFormAlert({
+        type: 'error',
+        message: error.message
+      })
+    })
+  }
+
   return (
     <Box className='content-center'>
       <Card sx={{ zIndex: 1 }}>
