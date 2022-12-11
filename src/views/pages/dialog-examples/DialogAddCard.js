@@ -19,7 +19,7 @@ import Select from '@mui/material/Select'
 import MenuItem from '@mui/material/MenuItem'
 import InputLabel from '@mui/material/InputLabel'
 import FormControl from '@mui/material/FormControl'
-import AnalyticsPerformance from 'src/views/dashboards/analytics/AnalyticsPerformance'
+import ViewContract from 'src/views/dashboards/analytics/ViewContract'
 
 // ** Styles Import
 import 'react-credit-cards/es/styles-compiled.css'
@@ -178,7 +178,7 @@ const DialogAddCard = () => {
               </Grid>
             </Grid>
           ) : (
-            <AnalyticsPerformance />
+            <ViewContract chartData={chartData} />
           )}
         </DialogContent>
         <DialogActions sx={{ pb: { xs: 8, sm: 12.5 }, justifyContent: 'center' }}>

@@ -8,14 +8,14 @@ import CardContent from '@mui/material/CardContent'
 import OptionsMenu from 'src/@core/components/option-menu'
 import ReactApexcharts from 'src/@core/components/react-apexcharts'
 
-const series = [
-  {
-    name: 'Net Worth',
-    data: [chartData]
-  }
-]
+const ViewContract = props => {
+  const series = [
+    {
+      name: 'Net Worth',
+      data: props.chartData
+    }
+  ]
 
-const ViewContract = () => {
   // ** Hook
   const theme = useTheme()
 
