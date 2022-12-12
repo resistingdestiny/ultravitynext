@@ -13,7 +13,6 @@ const CrmTable = () => {
   const { authUser, loading, auth } = useFirebaseAuth()
 
   const { data: items, status: itemsStatus, error: itemsError } = useItemsByOwner(authUser?.uid)
-  console.log(items)
 
   const rows = items || []
 
@@ -24,6 +23,20 @@ const CrmTable = () => {
       field: 'id',
       headerName: 'id',
       renderCell: ({ row }) => <Typography variant='body2'>{row.id}</Typography>
+    },
+    {
+      flex: 0.3,
+      minWidth: 250,
+      field: 'Score',
+      headerName: 'Score',
+      renderCell: ({ row }) => <Typography variant='body2'>{Math.round(row[0].total_score)}</Typography>
+    },
+    {
+      flex: 0.3,
+      minWidth: 250,
+      field: 'Recommendation',
+      headerName: 'Recommendation',
+      renderCell: ({ row }) => <Typography variant='body2'>{row[0].recommendation}</Typography>
     }
   ]
 
