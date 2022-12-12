@@ -29,11 +29,11 @@ const Img = styled('img')(({ theme }) => ({
   }
 }))
 
-const AnalyticsCongratulations = () => {
+const AnalyticsCongratulations = props => {
   // ** Hook
   const theme = useTheme()
   const { authUser, loading } = useFirebaseAuth()
-
+  const user_id = props.user_id
   return (
     <Card sx={{ position: 'relative' }}>
       <CardContent sx={{ p: theme => `${theme.spacing(6.75, 7.5)} !important` }}>
@@ -53,7 +53,7 @@ const AnalyticsCongratulations = () => {
             <Typography sx={{ mb: 4.5 }} variant='body2'>
               Your API key is{' '}
               <Box component='span' sx={{ fontWeight: 'bold' }}>
-                {authUser ? authUser.uid : 'missing'}
+                {user_id}
               </Box>
             </Typography>
           </Grid>
