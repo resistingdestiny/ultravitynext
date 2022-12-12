@@ -71,6 +71,9 @@ export function useItemOnce(id) {
   )
 }
 
+// Subscribe to all items, sorted by their creation date in descending order
+// (i.e. the latest item will be the first item in the query response)
+
 // Fetch item data once (non-hook)
 // Useful if you need to fetch data from outside of a component
 export function getItem(id) {
@@ -83,6 +86,22 @@ export function useItemsByOwner(owner) {
     ['items', { owner }],
     createQuery(() => query(collection(db, 'items'), where('owner', '==', owner))),
     { enabled: !!owner }
+  )
+}
+
+// Subscribe to all items by a specific owner, sorted by their creation date in descending order
+// (i.e. the latest item will be the first item in the query response)
+export function useLatestItemByOwner(owner) {
+  return useQuery(
+    ['latestItemByOwner', { owner }],
+    createQuery(() => query(collection(db, 'items'), where('owner', '==', owner), orderBy('created_at', 'desc'))),
+    {
+      // Only enable the query if there is an `owner` specified
+      enabled: !!owner,
+      // Limit the query to the first item only
+      initialData: [],
+      initialStale: true
+    }
   )
 }
 

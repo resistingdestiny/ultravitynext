@@ -15,13 +15,18 @@ import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts'
 import AnalyticsPerformance from 'src/views/dashboards/analytics/AnalyticsPerformance'
 
 import AnalyticsCongratulations from 'src/views/dashboards/analytics/AnalyticsCongratulations'
-
+import { useLatestItemByOwner } from 'src/util/db.js'
 import CrmTable from 'src/views/dashboards/crm/CrmTable'
-
 import useFirebaseAuth from 'src/hooks/useFirebaseAuth.js'
 const AnalyticsDashboard = () => {
   const { authUser, loading, signout } = useFirebaseAuth()
   authUser ? console.log(authUser.api_calls) : console.log('no user')
+
+  const radar_data = useLatestItemByOwner(authUser ? authUser.uid : 'missing')
+  if (radar_data && radar_data.length > 0) {
+    console.log(radar_data)
+  }
+
   return (
     <ApexChartWrapper>
       <Grid container spacing={6} className='match-height'>
