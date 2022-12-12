@@ -20,6 +20,7 @@ import MuiCard from '@mui/material/Card'
 import InputAdornment from '@mui/material/InputAdornment'
 import MuiFormControlLabel from '@mui/material/FormControlLabel'
 import useFirebaseAuth from 'src/hooks/useFirebaseAuth.js'
+import { useRouter } from 'next/router'
 // ** Icon Imports
 import Icon from 'src/@core/components/icon'
 
@@ -70,34 +71,28 @@ const FormControlLabel = styled(MuiFormControlLabel)(({ theme }) => ({
 const LoginPage = () => {
   const [rememberMe, setRememberMe] = useState(true)
   const [showPassword, setShowPassword] = useState(false)
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
 
   // ** Vars
 
   const { signInWithEmailAndPassword } = useFirebaseAuth()
-  const onSubmit = data => {
-    const { email, password } = data
+  const router = useRouter()
+
+  const login = e => {
+    e.preventDefault()
     signInWithEmailAndPassword(email, password)
       .then(res => {
-        // Handle the response
+        router.push('/')
       })
       .catch(err => {
         // Handle the error
+        console.log(err)
       })
   }
 
   // ** State
-  const [values, setValues] = useState({
-    password: '',
-    showPassword: false
-  })
   const theme = useTheme()
-  const handleChange = prop => event => {
-    setValues({ ...values, [prop]: event.target.value })
-  }
-
-  const handleClickShowPassword = () => {
-    setValues({ ...values, showPassword: !values.showPassword })
-  }
 
   const handleMouseDownPassword = event => {
     event.preventDefault()
@@ -187,25 +182,28 @@ const LoginPage = () => {
             </Typography>
             <Typography variant='body2'>Please sign-in to your account to start checking contracts</Typography>
           </Box>
-          <form noValidate autoComplete='off' onSubmit={e => e.preventDefault()}>
-            <TextField autoFocus fullWidth id='email' label='Email' sx={{ mb: 4 }} />
+          <form noValidate autoComplete='off' onSubmit={login}>
+            <TextField
+              onChange={e => setEmail(e.target.value)}
+              value={email}
+              autoFocus
+              fullWidth
+              id='email'
+              label='Email'
+              sx={{ mb: 4 }}
+            />
             <FormControl fullWidth>
               <InputLabel htmlFor='auth-login-password'>Password</InputLabel>
               <OutlinedInput
                 label='Password'
-                value={values.password}
+                value={password}
                 id='auth-login-password'
-                onChange={handleChange('password')}
-                type={values.showPassword ? 'text' : 'password'}
+                onChange={e => setPassword(e.target.value)}
+                type={'password'}
                 endAdornment={
                   <InputAdornment position='end'>
-                    <IconButton
-                      edge='end'
-                      onClick={handleClickShowPassword}
-                      onMouseDown={handleMouseDownPassword}
-                      aria-label='toggle password visibility'
-                    >
-                      <Icon icon={values.showPassword ? 'mdi:eye-outline' : 'mdi:eye-off-outline'} />
+                    <IconButton edge='end' aria-label='toggle password visibility'>
+                      <Icon icon={'mdi:eye-off-outline'} />
                     </IconButton>
                   </InputAdornment>
                 }

@@ -7,7 +7,6 @@ import Link from 'next/link'
 // ** MUI Components
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
-import Divider from '@mui/material/Divider'
 import Checkbox from '@mui/material/Checkbox'
 import TextField from '@mui/material/TextField'
 import Typography from '@mui/material/Typography'
@@ -47,6 +46,8 @@ const FormControlLabel = styled(MuiFormControlLabel)(({ theme }) => ({
 
 const Register = () => {
   const { createUserWithEmailAndPassword } = useFirebaseAuth()
+  const router = useRouter()
+
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
@@ -71,6 +72,7 @@ const Register = () => {
       createUserWithEmailAndPassword(email, password)
         .then(res => {
           console.log(res.user)
+          router.push('/')
         })
         .catch(err => setError(err.message))
     }
