@@ -61,7 +61,7 @@ const CrmTable = () => {
         pageSize={pageSize}
         rowsPerPageOptions={[7, 10, 25, 50]}
         components={{ Toolbar: QuickSearchToolbar }}
-        rows={filteredData.length ? filteredData : data}
+        rows={rows}
         onPageSizeChange={newPageSize => setPageSize(newPageSize)}
         componentsProps={{
           baseButton: {

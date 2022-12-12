@@ -1,11 +1,46 @@
 import { useState, useEffect } from 'react'
+import {
+  getAuth,
+  onAuthStateChanged,
+  signOut as authSignOut,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  GoogleAuthProvider,
+  FacebookAuthProvider,
+  TwitterAuthProvider,
+  GithubAuthProvider,
+  sendEmailVerification,
+  checkActionCode,
+  applyActionCode,
+  getAdditionalUserInfo,
+  updateEmail as authUpdateEmail,
+  updateProfile as authUpdateProfile,
+  updatePassword as authUpdatePassword,
+  sendPasswordResetEmail as authSendPasswordResetEmail,
+  confirmPasswordReset as authConfirmPasswordReset
+} from 'firebase/auth'
 import Firebase from 'src/configs/firebase'
-
+import { useUser, createUser, updateUser } from 'src/util/db'
 const formatAuthUser = user => {
   return {
     uid: user.uid,
     email: user.email
   }
+}
+
+// Wait for Firebase user to be initialized before resolving promise
+// and taking any further action (such as writing to the database)
+const waitForFirebase = uid => {
+  return new Promise(resolve => {
+    const unsubscribe = onAuthStateChanged(auth, user => {
+      // Ensure we have a user with expected `uid`
+      if (user && user.uid === uid) {
+        resolve(user) // Resolve promise
+        unsubscribe() // Prevent from firing again
+      }
+    })
+  })
 }
 
 const useFirebaseAuth = () => {
@@ -30,8 +65,25 @@ const useFirebaseAuth = () => {
   }
   const signInWithEmailAndPassword = (email, password) => Firebase.auth().signInWithEmailAndPassword(email, password)
 
+  // Store auth user in state
+  // `user` will be object, `null` (loading) or `false` (logged out)
+  const [user, setUser] = useState(null)
+
   const createUserWithEmailAndPassword = (email, password) =>
-    Firebase.auth().createUserWithEmailAndPassword(email, password)
+    Firebase.auth().createUserWithEmailAndPassword(email, password).then(signUp)
+
+  const signUp = async res => {
+    try {
+      const user = res.user
+      console.log('user', user)
+      // Pass the user's uid into the createUser function
+      createUser(user.uid, { email: user.email })
+    } catch (error) {
+      // Handle errors here
+      console.log(error)
+    }
+  }
+
   const signOut = () => Firebase.auth().signOut().then(resetUser)
 
   // listen for Firebase state change

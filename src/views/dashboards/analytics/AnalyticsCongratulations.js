@@ -1,4 +1,5 @@
 // ** MUI Imports
+import { useContext } from 'react'
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
 import Typography from '@mui/material/Typography'
@@ -7,6 +8,7 @@ import Grid from '@mui/material/Grid'
 import { styled, useTheme } from '@mui/material/styles'
 import useFirebaseAuth from 'src/hooks/useFirebaseAuth.js'
 import Firebase from 'src/configs/firebase'
+import Button from '@mui/material/Button'
 
 // Styled Grid component
 const StyledGrid = styled(Grid)(({ theme }) => ({
@@ -34,6 +36,10 @@ const AnalyticsCongratulations = props => {
   const theme = useTheme()
   const { authUser, loading } = useFirebaseAuth()
   const user_id = props.user_id
+  const { signout } = props
+  const handlesignout = () => {
+    Firebase.auth().signOut()
+  }
   return (
     <Card sx={{ position: 'relative' }}>
       <CardContent sx={{ p: theme => `${theme.spacing(6.75, 7.5)} !important` }}>
@@ -56,6 +62,7 @@ const AnalyticsCongratulations = props => {
                 {user_id}
               </Box>
             </Typography>
+            <Button onClick={handlesignout}>Sign Out</Button>
           </Grid>
         </Grid>
       </CardContent>

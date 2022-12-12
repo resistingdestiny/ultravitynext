@@ -72,7 +72,6 @@ const Register = () => {
       createUserWithEmailAndPassword(email, password)
         .then(res => {
           console.log(res.user)
-          router.push('/')
         })
         .catch(err => setError(err.message))
     }

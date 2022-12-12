@@ -21,15 +21,15 @@ import CrmTable from 'src/views/dashboards/crm/CrmTable'
 import useFirebaseAuth from 'src/hooks/useFirebaseAuth.js'
 
 const AnalyticsDashboard = () => {
-  const { authUser, loading } = useFirebaseAuth()
+  const { authUser, loading, signout } = useFirebaseAuth()
   return (
     <ApexChartWrapper>
       <Grid container spacing={6} className='match-height'>
         <Grid item xs={12} md={4}>
-          <AnalyticsCongratulations user_id={authUser ? authUser.uid : 'missing'} />
+          <AnalyticsCongratulations user_id={authUser ? authUser.uid : 'missing'} signout={signout} />
         </Grid>
         <Grid item md={4} sm={3} xs={12}>
-          <DialogAddCard />
+          <DialogAddCard user_id={authUser ? authUser.uid : 'missing'} />
         </Grid>
         <Grid item xs={6} md={2}>
           <CardStatisticsVertical
