@@ -31,13 +31,13 @@ const Transition = forwardRef(function Transition(props, ref) {
   return <Fade ref={ref} {...props} />
 })
 
-const DialogAddCard = () => {
+const DialogAddCard = props => {
   const [pending, setPending] = useState(false)
   const [formAlert, setFormAlert] = useState(null)
 
   const [contract, setContract] = useState('')
   const [chain, setChain] = useState('ethereum')
-  const [api_key, setApiKey] = useState('CAwy8StUGEPWo4kzqYpA7W7vloj2')
+  const api_key = props.user_id
   const [showProgress, setShowProgress] = useState(false)
   const [resJson, setResJson] = useState(false) // add this line
   const [chartData, setChartData] = useState([])

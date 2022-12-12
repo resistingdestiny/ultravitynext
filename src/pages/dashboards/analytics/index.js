@@ -19,9 +19,9 @@ import AnalyticsCongratulations from 'src/views/dashboards/analytics/AnalyticsCo
 import CrmTable from 'src/views/dashboards/crm/CrmTable'
 
 import useFirebaseAuth from 'src/hooks/useFirebaseAuth.js'
-
 const AnalyticsDashboard = () => {
   const { authUser, loading, signout } = useFirebaseAuth()
+  authUser ? console.log(authUser.api_calls) : console.log('no user')
   return (
     <ApexChartWrapper>
       <Grid container spacing={6} className='match-height'>
@@ -33,7 +33,7 @@ const AnalyticsDashboard = () => {
         </Grid>
         <Grid item xs={6} md={2}>
           <CardStatisticsVertical
-            stats='5'
+            stats='N/A'
             color='primary'
             title='Scored'
             chipText='So Far'

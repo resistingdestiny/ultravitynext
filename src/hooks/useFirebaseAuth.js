@@ -63,7 +63,8 @@ const useFirebaseAuth = () => {
     setAuthUser(null)
     setLoading(true)
   }
-  const signInWithEmailAndPassword = (email, password) => Firebase.auth().signInWithEmailAndPassword(email, password)
+  const signInWithEmailAndPassword = (email, password) =>
+    Firebase.auth().signInWithEmailAndPassword(email, password).then(window.location.replace('/dashboards/analytics'))
 
   // Store auth user in state
   // `user` will be object, `null` (loading) or `false` (logged out)

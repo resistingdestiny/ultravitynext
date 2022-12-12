@@ -9,6 +9,7 @@ import { styled, useTheme } from '@mui/material/styles'
 import useFirebaseAuth from 'src/hooks/useFirebaseAuth.js'
 import Firebase from 'src/configs/firebase'
 import Button from '@mui/material/Button'
+import { useRouter } from 'next/router'
 
 // Styled Grid component
 const StyledGrid = styled(Grid)(({ theme }) => ({
@@ -37,8 +38,10 @@ const AnalyticsCongratulations = props => {
   const { authUser, loading } = useFirebaseAuth()
   const user_id = props.user_id
   const { signout } = props
+  const router = useRouter()
   const handlesignout = () => {
     Firebase.auth().signOut()
+    router.push('/')
   }
   return (
     <Card sx={{ position: 'relative' }}>
