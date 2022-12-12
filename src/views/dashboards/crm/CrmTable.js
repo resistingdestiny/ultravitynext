@@ -1,8 +1,13 @@
+import { useState } from 'react'
+
 // ** MUI Imports
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
 import Typography from '@mui/material/Typography'
 import { DataGrid } from '@mui/x-data-grid'
+import { useCollection } from 'react-firebase-hooks/firestore'
+import useFirebaseAuth from 'src/hooks/useFirebaseAuth.js'
+import { updateItem, deleteItem, useItemsByOwner } from 'src/util/db'
 
 // ** Icon Imports
 import Icon from 'src/@core/components/icon'
@@ -108,6 +113,17 @@ const columns = [
 ]
 
 const CrmTable = () => {
+  const { authUser, loading, auth } = useFirebaseAuth()
+
+  const { data: items, status: itemsStatus, error: itemsError } = useItemsByOwner(authUser?.uid)
+  console.log(items)
+
+  const [creatingItem, setCreatingItem] = useState(false)
+
+  const [updatingItemId, setUpdatingItemId] = useState(null)
+
+  const itemsAreEmpty = !items || items.length === 0
+
   return (
     <Card>
       <DataGrid autoHeight hideFooter rows={rows} columns={columns} disableSelectionOnClick pagination={undefined} />

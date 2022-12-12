@@ -6,6 +6,8 @@ import { Router } from 'next/router'
 import { store } from 'src/store'
 import { Provider } from 'react-redux'
 
+import { QueryClient, QueryClientProvider } from 'react-query'
+
 // ** Loader Import
 import NProgress from 'nprogress'
 
@@ -79,37 +81,41 @@ const App = props => {
     Component.getLayout ?? (page => <UserLayout contentHeightFixed={contentHeightFixed}>{page}</UserLayout>)
   const setConfig = Component.setConfig ?? undefined
 
-  return (
-    <Provider store={store}>
-      <CacheProvider value={emotionCache}>
-        <Head>
-          <title>{`${themeConfig.templateName} - Material Design React Admin Template`}</title>
-          <meta
-            name='description'
-            content={`${themeConfig.templateName} – Material Design React Admin Dashboard Template – is the most developer friendly & highly customizable Admin Dashboard Template based on MUI v5.`}
-          />
-          <meta name='keywords' content='Material Design, MUI, Admin Template, React Admin Template' />
-          <meta name='viewport' content='initial-scale=1, width=device-width' />
-        </Head>
+  const queryClient = new QueryClient()
 
-        <FirebaseAuthProvider>
-          <SettingsProvider {...(setConfig ? { pageSettings: setConfig() } : {})}>
-            <SettingsConsumer>
-              {({ settings }) => {
-                return (
-                  <ThemeComponent settings={settings}>
-                    <WindowWrapper>{getLayout(<Component {...pageProps} />)}</WindowWrapper>
-                    <ReactHotToast>
-                      <Toaster position={settings.toastPosition} toastOptions={{ className: 'react-hot-toast' }} />
-                    </ReactHotToast>
-                  </ThemeComponent>
-                )
-              }}
-            </SettingsConsumer>
-          </SettingsProvider>
-        </FirebaseAuthProvider>
-      </CacheProvider>
-    </Provider>
+  return (
+    <QueryClientProvider client={queryClient}>
+      <Provider store={store}>
+        <CacheProvider value={emotionCache}>
+          <Head>
+            <title>{`${themeConfig.templateName} - Material Design React Admin Template`}</title>
+            <meta
+              name='description'
+              content={`${themeConfig.templateName} – Material Design React Admin Dashboard Template – is the most developer friendly & highly customizable Admin Dashboard Template based on MUI v5.`}
+            />
+            <meta name='keywords' content='Material Design, MUI, Admin Template, React Admin Template' />
+            <meta name='viewport' content='initial-scale=1, width=device-width' />
+          </Head>
+
+          <FirebaseAuthProvider>
+            <SettingsProvider {...(setConfig ? { pageSettings: setConfig() } : {})}>
+              <SettingsConsumer>
+                {({ settings }) => {
+                  return (
+                    <ThemeComponent settings={settings}>
+                      <WindowWrapper>{getLayout(<Component {...pageProps} />)}</WindowWrapper>
+                      <ReactHotToast>
+                        <Toaster position={settings.toastPosition} toastOptions={{ className: 'react-hot-toast' }} />
+                      </ReactHotToast>
+                    </ThemeComponent>
+                  )
+                }}
+              </SettingsConsumer>
+            </SettingsProvider>
+          </FirebaseAuthProvider>
+        </CacheProvider>
+      </Provider>
+    </QueryClientProvider>
   )
 }
 

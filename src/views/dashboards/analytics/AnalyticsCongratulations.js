@@ -1,11 +1,12 @@
 // ** MUI Imports
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
-import Button from '@mui/material/Button'
 import Typography from '@mui/material/Typography'
 import CardContent from '@mui/material/CardContent'
 import Grid from '@mui/material/Grid'
 import { styled, useTheme } from '@mui/material/styles'
+import useFirebaseAuth from 'src/hooks/useFirebaseAuth.js'
+import Firebase from 'src/configs/firebase'
 
 // Styled Grid component
 const StyledGrid = styled(Grid)(({ theme }) => ({
@@ -31,6 +32,7 @@ const Img = styled('img')(({ theme }) => ({
 const AnalyticsCongratulations = () => {
   // ** Hook
   const theme = useTheme()
+  const { authUser, loading } = useFirebaseAuth()
 
   return (
     <Card sx={{ position: 'relative' }}>
@@ -51,7 +53,7 @@ const AnalyticsCongratulations = () => {
             <Typography sx={{ mb: 4.5 }} variant='body2'>
               Your API key is{' '}
               <Box component='span' sx={{ fontWeight: 'bold' }}>
-                0x1234567890
+                {authUser ? authUser.uid : 'missing'}
               </Box>
             </Typography>
           </Grid>
