@@ -20,8 +20,7 @@ import { styled, useTheme } from '@mui/material/styles'
 import MuiCard from '@mui/material/Card'
 import InputAdornment from '@mui/material/InputAdornment'
 import MuiFormControlLabel from '@mui/material/FormControlLabel'
-import { auth } from 'src/util/firebase.js'
-import { createUserWithEmailAndPassword } from 'firebase/auth'
+import useFirebaseAuth from 'src/hooks/useFirebaseAuth.js'
 import { useRouter } from 'next/router'
 
 // ** Icon Imports
@@ -47,6 +46,7 @@ const FormControlLabel = styled(MuiFormControlLabel)(({ theme }) => ({
 }))
 
 const Register = () => {
+  const { createUserWithEmailAndPassword } = useFirebaseAuth()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [confirmPassword, setConfirmPassword] = useState('')
@@ -68,7 +68,7 @@ const Register = () => {
     setError('')
     if (validatePassword()) {
       // Create a new user with email and password using firebase
-      createUserWithEmailAndPassword(auth, email, password)
+      createUserWithEmailAndPassword(email, password)
         .then(res => {
           console.log(res.user)
         })
