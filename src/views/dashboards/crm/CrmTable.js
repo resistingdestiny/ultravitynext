@@ -9,11 +9,12 @@ import { useCollection } from 'react-firebase-hooks/firestore'
 import useFirebaseAuth from 'src/hooks/useFirebaseAuth.js'
 import { updateItem, deleteItem, useItemsByOwner } from 'src/util/db'
 import QuickSearchToolbar from 'src/views/table/data-grid/QuickSearchToolbar'
+import { DialogViewCard } from 'src/views/pages/dialog-examples/DialogViewCard'
 const CrmTable = () => {
   const { authUser, loading, auth } = useFirebaseAuth()
 
   const { data: items, status: itemsStatus, error: itemsError } = useItemsByOwner(authUser?.uid)
-
+  const [selectedRow, setSelectedRow] = useState(null)
   const rows = items || []
 
   const columns = [
@@ -76,6 +77,10 @@ const CrmTable = () => {
         components={{ Toolbar: QuickSearchToolbar }}
         rows={rows}
         onPageSizeChange={newPageSize => setPageSize(newPageSize)}
+        onRowClick={rowData => {
+          // set the selected row data
+          setSelectedRow(rowData)
+        }}
         componentsProps={{
           baseButton: {
             variant: 'outlined'
@@ -87,6 +92,7 @@ const CrmTable = () => {
           }
         }}
       />
+      {selectedRow && <DialogViewCard rowData={selectedRow} />}
     </Card>
   )
 }
