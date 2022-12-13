@@ -5,17 +5,13 @@ import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
 import Typography from '@mui/material/Typography'
 import { DataGrid } from '@mui/x-data-grid'
-import { useCollection } from 'react-firebase-hooks/firestore'
 import useFirebaseAuth from 'src/hooks/useFirebaseAuth.js'
 import { updateItem, deleteItem, useItemsByOwner } from 'src/util/db'
 import QuickSearchToolbar from 'src/views/table/data-grid/QuickSearchToolbar'
 import { DialogViewCard } from 'src/views/pages/dialog-examples/DialogViewCard'
-const CrmTable = () => {
-  const { authUser, loading, auth } = useFirebaseAuth()
-
-  const { data: items, status: itemsStatus, error: itemsError } = useItemsByOwner(authUser?.uid)
+const CrmTable = props => {
   const [selectedRow, setSelectedRow] = useState(null)
-
+  const items = props.contract_data
   const rows = items || []
 
   const columns = [
@@ -31,14 +27,26 @@ const CrmTable = () => {
       minWidth: 250,
       field: 'Score',
       headerName: 'Score',
-      renderCell: ({ row }) => <Typography variant='body2'>{Math.round(row[0].total_score)}</Typography>
+      renderCell: ({ row }) => {
+        try {
+          return <Typography variant='body2'>{Math.round(row.score)}</Typography>
+        } catch (error) {
+          return <Typography variant='body2'>N/A</Typography>
+        }
+      }
     },
     {
       flex: 0.3,
       minWidth: 250,
       field: 'Recommendation',
       headerName: 'Recommendation',
-      renderCell: ({ row }) => <Typography variant='body2'>{row[0].recommendation}</Typography>
+      renderCell: ({ row }) => {
+        try {
+          return <Typography variant='body2'>{row.recommendation}</Typography>
+        } catch (error) {
+          return <Typography variant='body2'>N/A</Typography>
+        }
+      }
     }
   ]
 

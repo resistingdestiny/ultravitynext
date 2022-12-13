@@ -11,20 +11,39 @@ import DialogAddCard from 'src/views/pages/dialog-examples/DialogAddCard'
 import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts'
 
 // ** Demo Components Imports
-
+import useFirebaseAuth from 'src/hooks/useFirebaseAuth.js'
+import { updateItem, deleteItem, useItemsByOwner } from 'src/util/db'
 import AnalyticsPerformance from 'src/views/dashboards/analytics/AnalyticsPerformance'
 
 import AnalyticsCongratulations from 'src/views/dashboards/analytics/AnalyticsCongratulations'
 import { useLatestItemByOwner } from 'src/util/db.js'
 import CrmTable from 'src/views/dashboards/crm/CrmTable'
-import useFirebaseAuth from 'src/hooks/useFirebaseAuth.js'
 const AnalyticsDashboard = () => {
-  const { authUser, loading, signout } = useFirebaseAuth()
-  authUser ? console.log(authUser.api_calls) : console.log('no user')
-
+  /* 
   const radar_data = useLatestItemByOwner(authUser ? authUser.uid : 'missing')
   if (radar_data && radar_data.length > 0) {
     console.log(radar_data)
+  }
+ */
+
+  const { authUser, loading, auth, signout } = useFirebaseAuth()
+  authUser ? console.log(authUser.api_calls) : console.log('no user')
+  const { data: items, status: itemsStatus, error: itemsError } = useItemsByOwner(authUser?.uid)
+  let contract_data = []
+  if (itemsStatus === 'success') {
+    contract_data = items.map((item, index) => {
+      return {
+        id: item.id,
+        name: item.id.substr(0, 20).concat('...'),
+        score: item[0].total_score, //item[item.length - 2].recent_contract.score.total_score
+        longevity: item[0].radar_chart.longevity,
+        immutability: item[0].radar_chart.immutability,
+        popularity: item[0].radar_chart.popularity,
+        reliability: item[0].radar_chart.reliability,
+        credibility: item[0].radar_chart.credibility,
+        recommendation: item[0].recommendation
+      }
+    })
   }
 
   return (
@@ -59,7 +78,7 @@ const AnalyticsDashboard = () => {
           <AnalyticsPerformance />
         </Grid>
         <Grid item xs={12} md={8}>
-          <CrmTable />
+          <CrmTable contract_data={contract_data} />
         </Grid>
       </Grid>
     </ApexChartWrapper>
