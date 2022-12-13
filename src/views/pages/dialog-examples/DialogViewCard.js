@@ -30,11 +30,10 @@ const DialogViewCard = props => {
 
   // ** States
   const [show, setShow] = useState(true)
-  console.log(props.rowData.id)
-  setShow(true)
 
   const handleClose = () => {
     setShow(false)
+    window.location.reload()
   }
   console.log(props.rowData.id)
   useEffect(() => {

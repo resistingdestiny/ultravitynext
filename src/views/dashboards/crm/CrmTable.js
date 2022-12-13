@@ -15,6 +15,7 @@ const CrmTable = () => {
 
   const { data: items, status: itemsStatus, error: itemsError } = useItemsByOwner(authUser?.uid)
   const [selectedRow, setSelectedRow] = useState(null)
+
   const rows = items || []
 
   const columns = [
@@ -67,6 +68,7 @@ const CrmTable = () => {
       setFilteredData([])
     }
   }
+
   return (
     <Card>
       <DataGrid
