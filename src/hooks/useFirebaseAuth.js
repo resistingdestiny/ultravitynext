@@ -78,7 +78,7 @@ const useFirebaseAuth = () => {
       const user = res.user
       console.log('user', user)
       // Pass the user's uid into the createUser function
-      createUser(user.uid, { email: user.email })
+      createUser(user.uid, { email: user.email, owner: user.uid })
       window.location.replace('/dashboards/analytics')
     } catch (error) {
       // Handle errors here

@@ -8,16 +8,16 @@ import CardContent from '@mui/material/CardContent'
 import OptionsMenu from 'src/@core/components/option-menu'
 import ReactApexcharts from 'src/@core/components/react-apexcharts'
 
-const series = [
-  {
-    name: 'Net Worth',
-    data: [110, 72, 62, 65, 100]
-  }
-]
-
-const AnalyticsPerformance = () => {
+const AnalyticsPerformance = props => {
   // ** Hook
   const theme = useTheme()
+  console.log(props.radar_data)
+  const series = [
+    {
+      name: 'Net Worth',
+      data: [0, 1, 2, 3, 4]
+    }
+  ]
 
   const options = {
     chart: {

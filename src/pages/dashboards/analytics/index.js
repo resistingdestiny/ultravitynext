@@ -1,5 +1,9 @@
 // ** MUI Imports
 import Grid from '@mui/material/Grid'
+import Card from '@mui/material/Card'
+import { useTheme } from '@mui/material/styles'
+import CardHeader from '@mui/material/CardHeader'
+import CardContent from '@mui/material/CardContent'
 
 // ** Icon Imports
 import Icon from 'src/@core/components/icon'
@@ -9,7 +13,8 @@ import CardStatisticsVertical from 'src/@core/components/card-statistics/card-st
 import DialogAddCard from 'src/views/pages/dialog-examples/DialogAddCard'
 // ** Styled Component Import
 import ApexChartWrapper from 'src/@core/styles/libs/react-apexcharts'
-
+import OptionsMenu from 'src/@core/components/option-menu'
+import ReactApexcharts from 'src/@core/components/react-apexcharts'
 // ** Demo Components Imports
 import useFirebaseAuth from 'src/hooks/useFirebaseAuth.js'
 import { updateItem, deleteItem, useItemsByOwner } from 'src/util/db'
@@ -19,13 +24,6 @@ import AnalyticsCongratulations from 'src/views/dashboards/analytics/AnalyticsCo
 import { useLatestItemByOwner } from 'src/util/db.js'
 import CrmTable from 'src/views/dashboards/crm/CrmTable'
 const AnalyticsDashboard = () => {
-  /* 
-  const radar_data = useLatestItemByOwner(authUser ? authUser.uid : 'missing')
-  if (radar_data && radar_data.length > 0) {
-    console.log(radar_data)
-  }
- */
-
   const { authUser, loading, auth, signout } = useFirebaseAuth()
   authUser ? console.log(authUser.api_calls) : console.log('no user')
   const { data: items, status: itemsStatus, error: itemsError } = useItemsByOwner(authUser?.uid)
@@ -34,6 +32,7 @@ const AnalyticsDashboard = () => {
     contract_data = items.map((item, index) => {
       return {
         id: item.id,
+        created_at: item.created_at,
         name: item.id.substr(0, 20).concat('...'),
         score: item[0].total_score, //item[item.length - 2].recent_contract.score.total_score
         longevity: item[0].radar_chart.longevity,
@@ -45,7 +44,85 @@ const AnalyticsDashboard = () => {
       }
     })
   }
+  const { data: latest, status: latestStatus, error: latestError } = useLatestItemByOwner(authUser?.uid)
+  let firstItem = []
+  let firstRadar = []
+  let series = []
+  if (latest && latest.length > 0) {
+    const firstItem = latest.slice(0, 1)
+    const firstRadar = firstItem[0][0].radar_chart
+    console.log(firstRadar)
+    series = [
+      {
+        name: 'Net Worth',
+        data: [
+          firstRadar.longevity,
+          firstRadar.immutability,
+          firstRadar.popularity,
+          firstRadar.reliability,
+          firstRadar.credibility
+        ]
+      }
+    ]
+  } else {
+    console.log('no radar data')
+  }
+  const theme = useTheme()
 
+  const options = {
+    chart: {
+      parentHeightOffset: 0,
+      toolbar: { show: false }
+    },
+    legend: {
+      markers: { offsetX: -2 },
+      itemMargin: { horizontal: 10 },
+      labels: { colors: theme.palette.text.secondary }
+    },
+    plotOptions: {
+      radar: {
+        size: 100,
+        polygons: {
+          strokeColors: theme.palette.divider,
+          connectorColors: theme.palette.divider
+        }
+      }
+    },
+    fill: {
+      type: 'solid',
+      color: ['#9400D3']
+      /* gradient: {
+        color: ['#9400D3'] */
+      /* shade: 'dark',
+        gradientToColors: [theme.palette.warning.main, theme.palette.primary.main],
+        shadeIntensity: 1,
+        type: 'vertical',
+        opacityFrom: 1,
+        opacityTo: 0.9,
+        stops: [0, 100] }*/
+    },
+    colors: ['#9400D3'],
+    labels: ['Immutability', 'Reliability', 'Credibility', 'Longevity', 'Popularity'],
+    markers: { size: 0 },
+    xaxis: {
+      labels: {
+        show: true,
+        style: {
+          fontSize: '14px',
+          colors: [
+            theme.palette.text.disabled,
+            theme.palette.text.disabled,
+            theme.palette.text.disabled,
+            theme.palette.text.disabled,
+            theme.palette.text.disabled,
+            theme.palette.text.disabled
+          ]
+        }
+      }
+    },
+    yaxis: { show: false },
+    grid: { show: false }
+  }
   return (
     <ApexChartWrapper>
       <Grid container spacing={6} className='match-height'>
@@ -75,8 +152,27 @@ const AnalyticsDashboard = () => {
         </Grid>
 
         <Grid item xs={12} sm={6} md={4}>
-          <AnalyticsPerformance />
+          <Card>
+            <CardHeader
+              title='Last Contract'
+              action={
+                <OptionsMenu
+                  options={['Last 28 Days', 'Last Month', 'Last Year']}
+                  iconButtonProps={{ size: 'small', className: 'card-more-options' }}
+                />
+              }
+            />
+            <CardContent
+              sx={{
+                pt: { xs: `${theme.spacing(6)} !important`, md: `${theme.spacing(0)} !important` },
+                pb: { xs: `${theme.spacing(8)} !important`, md: `${theme.spacing(5)} !important` }
+              }}
+            >
+              <ReactApexcharts type='radar' height={278} series={series} options={options} />
+            </CardContent>
+          </Card>
         </Grid>
+
         <Grid item xs={12} md={8}>
           <CrmTable contract_data={contract_data} />
         </Grid>

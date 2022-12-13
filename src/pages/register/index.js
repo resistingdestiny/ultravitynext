@@ -70,9 +70,7 @@ const Register = () => {
     if (validatePassword()) {
       // Create a new user with email and password using firebase
       createUserWithEmailAndPassword(email, password)
-        .then(res => {
-          console.log(res.user)
-        })
+        .then(res => {})
         .catch(err => setError(err.message))
     }
     setEmail('')

@@ -33,7 +33,6 @@ const DialogViewCard = props => {
 
   const handleClose = () => {
     setShow(false)
-    window.location.reload()
   }
   console.log(props.rowData.id)
   useEffect(() => {
