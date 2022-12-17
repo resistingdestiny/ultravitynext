@@ -13,9 +13,13 @@ import QuickSearchToolbar from 'src/views/table/data-grid/QuickSearchToolbar'
 import { DialogViewCard } from 'src/views/pages/dialog-examples/DialogViewCard'
 const CrmTable = props => {
   const [selectedRow, setSelectedRow] = useState(null)
+  const [showDialogViewCard, setShowDialogViewCard] = useState(false)
+
   const items = props.contract_data
   const rows = items || []
-
+  const toggleDialogViewCard = () => {
+    setShowDialogViewCard(!showDialogViewCard)
+  }
   const columns = [
     {
       flex: 0.1,
@@ -105,6 +109,8 @@ const CrmTable = props => {
         onRowClick={rowData => {
           // set the selected row data
           setSelectedRow(rowData)
+          // Toggle the visibility of the DialogViewCard component
+          setShowDialogViewCard(true)
         }}
         componentsProps={{
           baseButton: {
@@ -117,7 +123,14 @@ const CrmTable = props => {
           }
         }}
       />
-      {selectedRow && <DialogViewCard rowData={selectedRow} />}
+      {showDialogViewCard && (
+        <DialogViewCard
+          showDialogViewCard={showDialogViewCard}
+          rowData={selectedRow}
+          toggleDialogViewCard={toggleDialogViewCard}
+          setShowDialogViewCard={setShowDialogViewCard}
+        />
+      )}
     </Card>
   )
 }

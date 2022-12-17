@@ -41,10 +41,12 @@ const DialogViewCard = props => {
   const [makeReport, setMakeReport] = useState(false)
 
   // ** States
-  const [show, setShow] = useState(true)
+  const [show, setShow] = useState(props.showDialogViewCard)
 
   const handleClose = () => {
     setShow(false)
+    props.setShowDialogViewCard(false)
+    console.log(props.rowData)
   }
   const handleReport = () => {
     if (makeReport) {
@@ -70,7 +72,7 @@ const DialogViewCard = props => {
     <Card>
       <Dialog
         fullWidth
-        open={show}
+        open={props.showDialogViewCard}
         maxWidth='sm'
         scroll='body'
         onClose={handleClose}

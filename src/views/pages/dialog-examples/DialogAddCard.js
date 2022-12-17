@@ -200,7 +200,9 @@ const DialogAddCard = props => {
                       <TableRow>
                         <TableCell style={{ fontWeight: 'bold' }}>Name</TableCell>
                         <TableCell>
-                          <TextField size='small' value='name' onChange={event => setName(event.target.value)} />
+                          <Box marginRight={16}>
+                            <TextField size='small' value='name' onChange={event => setName(event.target.value)} />
+                          </Box>
                           <Button variant='outlined' color='secondary'>
                             Add
                           </Button>
