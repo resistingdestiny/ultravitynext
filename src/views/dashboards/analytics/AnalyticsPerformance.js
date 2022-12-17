@@ -74,27 +74,7 @@ const AnalyticsPerformance = props => {
     grid: { show: false }
   }
 
-  return (
-    <Card>
-      <CardHeader
-        title='Last Contract'
-        action={
-          <OptionsMenu
-            options={['Last 28 Days', 'Last Month', 'Last Year']}
-            iconButtonProps={{ size: 'small', className: 'card-more-options' }}
-          />
-        }
-      />
-      <CardContent
-        sx={{
-          pt: { xs: `${theme.spacing(6)} !important`, md: `${theme.spacing(0)} !important` },
-          pb: { xs: `${theme.spacing(8)} !important`, md: `${theme.spacing(5)} !important` }
-        }}
-      >
-        <ReactApexcharts type='radar' height={278} series={series} options={options} />
-      </CardContent>
-    </Card>
-  )
+  return <h1>Table</h1>
 }
 
 export default AnalyticsPerformance

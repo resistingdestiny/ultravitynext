@@ -34,11 +34,17 @@ const DialogViewCard = props => {
   const handleClose = () => {
     setShow(false)
   }
-  console.log(props.rowData.id)
+  console.log(props.rowData.row.longevity)
   useEffect(() => {
-    setChartData([0, 1, 2, 3, 4])
-  }, []) // Only run on initial render
-
+    setChartData([
+      props.rowData.row.longevity,
+      props.rowData.row.reliability,
+      props.rowData.row.credibility,
+      props.rowData.row.popularity,
+      props.rowData.row.immutability
+    ])
+  }, [])
+  console.log(chartData)
   return (
     <Card>
       <Dialog
@@ -62,6 +68,7 @@ const DialogViewCard = props => {
           </Box>
 
           <ViewContract chartData={chartData} />
+          <Typography variant='body2'>{props.rowData.row.recommendation}</Typography>
         </DialogContent>
         <DialogActions sx={{ pb: { xs: 8, sm: 12.5 }, justifyContent: 'center' }}>
           <Button variant='outlined' color='secondary' onClick={handleClose}>

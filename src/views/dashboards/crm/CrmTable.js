@@ -16,15 +16,15 @@ const CrmTable = props => {
 
   const columns = [
     {
-      flex: 0.3,
+      flex: 0.1,
       minWidth: 250,
       field: 'id',
       headerName: 'id',
-      renderCell: ({ row }) => <Typography variant='body2'>{row.id}</Typography>
+      renderCell: ({ row }) => <Typography variant='body2'>{row.id.substring(0, 30) + '...'}</Typography>
     },
     {
-      flex: 0.3,
-      minWidth: 250,
+      flex: 0.025,
+      minWidth: 50,
       field: 'Score',
       headerName: 'Score',
       renderCell: ({ row }) => {
@@ -36,13 +36,13 @@ const CrmTable = props => {
       }
     },
     {
-      flex: 0.3,
+      flex: 0.2,
       minWidth: 250,
       field: 'Recommendation',
       headerName: 'Recommendation',
       renderCell: ({ row }) => {
         try {
-          return <Typography variant='body2'>{row.recommendation}</Typography>
+          return <Typography variant='body2'>{row.recommendation.substring(0, 30) + '...'}</Typography>
         } catch (error) {
           return <Typography variant='body2'>N/A</Typography>
         }

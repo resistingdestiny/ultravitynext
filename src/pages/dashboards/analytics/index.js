@@ -18,7 +18,6 @@ import ReactApexcharts from 'src/@core/components/react-apexcharts'
 // ** Demo Components Imports
 import useFirebaseAuth from 'src/hooks/useFirebaseAuth.js'
 import { updateItem, deleteItem, useItemsByOwner } from 'src/util/db'
-import AnalyticsPerformance from 'src/views/dashboards/analytics/AnalyticsPerformance'
 
 import AnalyticsCongratulations from 'src/views/dashboards/analytics/AnalyticsCongratulations'
 import { useLatestItemByOwner } from 'src/util/db.js'
@@ -54,13 +53,13 @@ const AnalyticsDashboard = () => {
     console.log(firstRadar)
     series = [
       {
-        name: 'Net Worth',
+        name: 'Contract Data',
         data: [
           firstRadar.longevity,
-          firstRadar.immutability,
-          firstRadar.popularity,
           firstRadar.reliability,
-          firstRadar.credibility
+          firstRadar.credibility,
+          firstRadar.popularity,
+          firstRadar.immutability
         ]
       }
     ]
@@ -91,15 +90,6 @@ const AnalyticsDashboard = () => {
     fill: {
       type: 'solid',
       color: ['#9400D3']
-      /* gradient: {
-        color: ['#9400D3'] */
-      /* shade: 'dark',
-        gradientToColors: [theme.palette.warning.main, theme.palette.primary.main],
-        shadeIntensity: 1,
-        type: 'vertical',
-        opacityFrom: 1,
-        opacityTo: 0.9,
-        stops: [0, 100] }*/
     },
     colors: ['#9400D3'],
     labels: ['Immutability', 'Reliability', 'Credibility', 'Longevity', 'Popularity'],
