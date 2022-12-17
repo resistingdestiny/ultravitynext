@@ -2,6 +2,8 @@ import { useState } from 'react'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
+import Button from '@mui/material/Button'
+
 import Card from '@mui/material/Card'
 import Typography from '@mui/material/Typography'
 import { DataGrid } from '@mui/x-data-grid'
@@ -46,6 +48,19 @@ const CrmTable = props => {
         } catch (error) {
           return <Typography variant='body2'>N/A</Typography>
         }
+      }
+    },
+    {
+      flex: 0.125,
+      minWidth: 140,
+      field: 'actions',
+      headerName: 'Actions',
+      renderCell: ({ row }) => {
+        return (
+          <Button size='small' variant='outlined' color='secondary'>
+            Report
+          </Button>
+        )
       }
     }
   ]

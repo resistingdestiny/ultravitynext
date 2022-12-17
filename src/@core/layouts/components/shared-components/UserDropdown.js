@@ -19,6 +19,8 @@ import Icon from 'src/@core/components/icon'
 
 // ** Context
 import { useAuth } from 'src/hooks/useAuth'
+import useFirebaseAuth from 'src/hooks/useFirebaseAuth.js'
+import Firebase from 'src/configs/firebase'
 
 // ** Styled Components
 const BadgeContentSpan = styled('span')(({ theme }) => ({
@@ -30,6 +32,8 @@ const BadgeContentSpan = styled('span')(({ theme }) => ({
 }))
 
 const UserDropdown = props => {
+  const { authUser, loading, auth, signout } = useFirebaseAuth()
+
   // ** Props
   const { settings } = props
 
@@ -70,8 +74,8 @@ const UserDropdown = props => {
   }
 
   const handleLogout = () => {
-    logout()
-    handleDropdownClose()
+    Firebase.auth().signOut()
+    router.push('/')
   }
 
   return (
@@ -110,13 +114,7 @@ const UserDropdown = props => {
                 vertical: 'bottom',
                 horizontal: 'right'
               }}
-            >
-              <Avatar
-                alt='John Doe'
-                src='https://media-exp1.licdn.com/dms/image/C4D03AQEVub6EOxlsqg/profile-displayphoto-shrink_800_800/0/1639416710625?e=2147483647&v=beta&t=boMXoQL4M9MxdHhnm58RNDjT-sC8UwtcI7ArXP4BNww'
-                sx={{ width: '2.5rem', height: '2.5rem' }}
-              />
-            </Badge>
+            ></Badge>
             <Box sx={{ display: 'flex', ml: 3, alignItems: 'flex-start', flexDirection: 'column' }}>
               <Typography sx={{ fontWeight: 600 }}>Benedict Altier</Typography>
               <Typography variant='body2' sx={{ fontSize: '0.8rem', color: 'text.disabled' }}>
@@ -125,16 +123,8 @@ const UserDropdown = props => {
             </Box>
           </Box>
         </Box>
-        <Divider sx={{ mt: '0 !important' }} />
-        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose('/pages/user-profile/profile')}>
-          <Box sx={styles}>
-            <Icon icon='mdi:account-outline' />
-            Profile
-          </Box>
-        </MenuItem>
 
-        <Divider />
-        <MenuItem sx={{ p: 0 }} onClick={() => handleDropdownClose('/pages/account-settings/account')}>
+        <MenuItem sx={{ p: 0 }}>
           <Box sx={styles}>
             <Icon icon='mdi:cog-outline' />
             Settings
