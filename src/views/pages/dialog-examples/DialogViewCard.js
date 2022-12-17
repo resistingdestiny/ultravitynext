@@ -3,6 +3,7 @@ import { useState, useEffect, forwardRef } from 'react'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
+import Paper from '@mui/material/Paper'
 import Card from '@mui/material/Card'
 import Button from '@mui/material/Button'
 import Dialog from '@mui/material/Dialog'
@@ -14,6 +15,12 @@ import DialogActions from '@mui/material/DialogActions'
 import ViewContract from 'src/views/dashboards/analytics/ViewContract'
 import Grid from '@mui/material/Grid'
 import TextField from '@mui/material/TextField'
+import Table from '@mui/material/Table'
+import TableRow from '@mui/material/TableRow'
+import TableHead from '@mui/material/TableHead'
+import TableBody from '@mui/material/TableBody'
+import TableCell from '@mui/material/TableCell'
+import TableContainer from '@mui/material/TableContainer'
 
 // ** Styles Import
 import 'react-credit-cards/es/styles-compiled.css'
@@ -28,7 +35,7 @@ const Transition = forwardRef(function Transition(props, ref) {
 const DialogViewCard = props => {
   const [contract, setContract] = useState('')
   const [report, setReport] = useState('')
-
+  const [name, setName] = useState('')
   const [chain, setChain] = useState('ethereum')
   const [chartData, setChartData] = useState([])
   const [makeReport, setMakeReport] = useState(false)
@@ -78,12 +85,49 @@ const DialogViewCard = props => {
             <Typography variant='h5' sx={{ mb: 3, lineHeight: '2rem' }}>
               {makeReport ? 'Report Contract' : 'View Contract'}
             </Typography>
-            {!makeReport && <Typography variant='body2'>Contract address: {props.rowData.id.substr(0, 42)}</Typography>}
           </Box>
           {!makeReport && (
             <Box>
               <ViewContract chartData={chartData} />
-              <Typography variant='body2'>{props.rowData.row.recommendation}</Typography>
+              <TableContainer component={Paper}>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell variant='head'></TableCell>
+                      <TableCell variant='head'></TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell style={{ fontWeight: 'bold' }}>Name</TableCell>
+                      <TableCell>
+                        <TextField
+                          size='small'
+                          value={props.rowData.name}
+                          onChange={event => setName(event.target.value)}
+                        />
+                        <Button variant='outlined' color='secondary'>
+                          Add
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell style={{ fontWeight: 'bold' }}>Score</TableCell>
+                      <TableCell>{props.rowData.row.score}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell style={{ fontWeight: 'bold' }}>Description</TableCell>
+                      <TableCell>{props.rowData.row.recommendation}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell style={{ fontWeight: 'bold' }}>Address</TableCell>
+                      <TableCell>{props.rowData.id.substr(0, 42)}</TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </TableContainer>
+
+              <Typography variant='body2'></Typography>
             </Box>
           )}
           {makeReport && (

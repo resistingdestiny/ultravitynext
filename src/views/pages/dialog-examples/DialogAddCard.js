@@ -20,6 +20,13 @@ import MenuItem from '@mui/material/MenuItem'
 import InputLabel from '@mui/material/InputLabel'
 import FormControl from '@mui/material/FormControl'
 import ViewContract from 'src/views/dashboards/analytics/ViewContract'
+import Table from '@mui/material/Table'
+import TableRow from '@mui/material/TableRow'
+import TableHead from '@mui/material/TableHead'
+import TableBody from '@mui/material/TableBody'
+import TableCell from '@mui/material/TableCell'
+import TableContainer from '@mui/material/TableContainer'
+import Paper from '@mui/material/Paper'
 
 // ** Styles Import
 import 'react-credit-cards/es/styles-compiled.css'
@@ -34,7 +41,7 @@ const Transition = forwardRef(function Transition(props, ref) {
 const DialogAddCard = props => {
   const [pending, setPending] = useState(false)
   const [formAlert, setFormAlert] = useState(null)
-
+  const [name, setName] = useState('')
   const [contract, setContract] = useState('')
   const [chain, setChain] = useState('ethereum')
   const api_key = props.user_id
@@ -125,9 +132,7 @@ const DialogAddCard = props => {
             <Typography variant='h5' sx={{ mb: 3, lineHeight: '2rem' }}>
               {!resJson ? 'Add New Contract' : 'View Contract'}
             </Typography>
-            <Typography variant='body2'>
-              {!resJson ? 'Submit a smart contract address for validation' : `Contract address: ${contract}`}
-            </Typography>
+            <Typography variant='body2'>{!resJson ? 'Submit a smart contract address for validation' : ` `}</Typography>
           </Box>
           {!resJson ? (
             <Grid container spacing={6}>
@@ -179,7 +184,47 @@ const DialogAddCard = props => {
               </Grid>
             </Grid>
           ) : (
-            <ViewContract chartData={chartData} />
+            <Grid>
+              <ViewContract chartData={chartData} />
+
+              <Box>
+                <TableContainer component={Paper}>
+                  <Table>
+                    <TableHead>
+                      <TableRow>
+                        <TableCell variant='head'></TableCell>
+                        <TableCell variant='head'></TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody>
+                      <TableRow>
+                        <TableCell style={{ fontWeight: 'bold' }}>Name</TableCell>
+                        <TableCell>
+                          <TextField size='small' value='name' onChange={event => setName(event.target.value)} />
+                          <Button variant='outlined' color='secondary'>
+                            Add
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell style={{ fontWeight: 'bold' }}>Score</TableCell>
+                        <TableCell>21</TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell style={{ fontWeight: 'bold' }}>Description</TableCell>
+                        <TableCell>Hello</TableCell>
+                      </TableRow>
+                      <TableRow>
+                        <TableCell style={{ fontWeight: 'bold' }}>Address</TableCell>
+                        <TableCell>Test</TableCell>
+                      </TableRow>
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+
+                <Typography variant='body2'></Typography>
+              </Box>
+            </Grid>
           )}
         </DialogContent>
         <DialogActions sx={{ pb: { xs: 8, sm: 12.5 }, justifyContent: 'center' }}>
