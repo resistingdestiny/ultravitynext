@@ -68,7 +68,6 @@ const AccountSettings = ({ tab, apiPricingPlanData }) => {
     account: <TabAccount />,
     security: <TabSecurity />,
     connections: <TabConnections />,
-    notifications: <TabNotifications />,
     billing: <TabBilling apiPricingPlanData={apiPricingPlanData} />
   }
 
@@ -111,21 +110,13 @@ const AccountSettings = ({ tab, apiPricingPlanData }) => {
                     </Box>
                   }
                 />
-                <Tab
-                  value='notifications'
-                  label={
-                    <Box sx={{ display: 'flex', alignItems: 'center', ...(!hideText && { '& svg': { mr: 2 } }) }}>
-                      <Icon icon='mdi:bell-outline' />
-                      {!hideText && 'Notifications'}
-                    </Box>
-                  }
-                />
+
                 <Tab
                   value='connections'
                   label={
                     <Box sx={{ display: 'flex', alignItems: 'center', ...(!hideText && { '& svg': { mr: 2 } }) }}>
                       <Icon icon='mdi:link-variant' />
-                      {!hideText && 'Connections'}
+                      {!hideText && 'API'}
                     </Box>
                   }
                 />

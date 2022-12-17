@@ -39,9 +39,14 @@ const DialogViewCard = props => {
   const handleClose = () => {
     setShow(false)
   }
-  const handleReport = async e => {
-    e.preventDefault()
-    console.log('submitted')
+  const handleReport = () => {
+    if (makeReport) {
+      console.log('submitted')
+      setShow(false)
+      setMakeReport(false)
+    } else {
+      setMakeReport(true)
+    }
   }
   console.log(props.rowData.row.longevity)
   useEffect(() => {
@@ -82,19 +87,20 @@ const DialogViewCard = props => {
             </Box>
           )}
           {makeReport && (
-            <Grid container spacing={6}>
-              <Grid item xs={12} sx={{ pt: theme => `${theme.spacing(5)} !important` }}>
-                <Grid container spacing={6}>
-                  <Grid item xs={12} sx={{ mt: 7 }}>
-                    <TextField
-                      variant='outlined'
-                      type='text'
-                      name='Contract'
-                      value={contract}
-                      disabled={true}
-                      placeholder='Contract'
-                      onChange={e => setContract(e.target.value)}
-                      /*  inputRef={register({
+            <form>
+              <Grid container spacing={3}>
+                <Grid item xs={12} sx={{ pt: theme => `${theme.spacing(5)} !important` }}>
+                  <Grid container spacing={3}>
+                    <Grid item xs={12} sx={{ mt: 7 }}>
+                      <TextField
+                        variant='outlined'
+                        type='text'
+                        name='Contract'
+                        value={contract}
+                        disabled={true}
+                        placeholder='Contract'
+                        onChange={e => setContract(e.target.value)}
+                        /*  inputRef={register({
                      required: 'Please enter a contract address',
                      minLength: {
                        value: 41,
@@ -105,58 +111,35 @@ const DialogViewCard = props => {
                        message: 'Please enter a valid smart contract address'
                      }
                    })} */
-                      fullWidth
-                      autoComplete='off'
-                      label={props.rowData.id.substr(0, 42)}
-                    />
-                  </Grid>
-                  <Grid item xs={12} sx={{ mt: 7 }}>
-                    <TextField
-                      variant='outlined'
-                      type='text'
-                      name='Report'
-                      value={contract}
-                      multiline
-                      placeholder='Comment'
-                      onChange={e => setReport(e.target.value)}
-                      /*  inputRef={register({
-                     required: 'Please enter a contract address',
-                     minLength: {
-                       value: 41,
-                       message: 'Please enter a valid smart contract address'
-                     },
-                     maxLength: {
-                       value: 43,
-                       message: 'Please enter a valid smart contract address'
-                     }
-                   })} */
-                      fullWidth
-                      autoComplete='off'
-                      label='Report comment'
-                    />
+                        fullWidth
+                        autoComplete='off'
+                        label={props.rowData.id.substr(0, 42)}
+                      />
+                    </Grid>
+                    <Grid item xs={12} sx={{ mt: 7 }}>
+                      <TextField
+                        variant='outlined'
+                        type='text'
+                        name='Report'
+                        multiline
+                        placeholder='Comment'
+                        onChange={e => setReport(e.target.value)}
+                        fullWidth
+                        autoComplete='off'
+                        label='Report comment'
+                      />
+                    </Grid>
                   </Grid>
                 </Grid>
               </Grid>
-            </Grid>
+            </form>
           )}
         </DialogContent>
         <DialogActions sx={{ pb: { xs: 8, sm: 12.5 }, justifyContent: 'center' }}>
           <Button variant='outlined' color='primary' onClick={handleClose}>
             Close
           </Button>
-          <Button
-            variant='outlined'
-            color='error'
-            onClick={() => {
-              if (makeReport) {
-                // Perform action if makeReport is true
-                handleReport
-              } else {
-                // Perform action if makeReport is false
-                setMakeReport(true)
-              }
-            }}
-          >
+          <Button variant='outlined' color='error' onClick={handleReport}>
             Report
           </Button>
         </DialogActions>

@@ -25,7 +25,7 @@ const CrmTable = props => {
       renderCell: ({ row }) => <Typography variant='body2'>{row.id.substring(0, 30) + '...'}</Typography>
     },
     {
-      flex: 0.025,
+      flex: 0.05,
       minWidth: 50,
       field: 'Score',
       headerName: 'Score',
@@ -44,7 +44,7 @@ const CrmTable = props => {
       headerName: 'Recommendation',
       renderCell: ({ row }) => {
         try {
-          return <Typography variant='body2'>{row.recommendation.substring(0, 30) + '...'}</Typography>
+          return <Typography variant='body2'>{row.recommendation.substring(0, 40) + '...'}</Typography>
         } catch (error) {
           return <Typography variant='body2'>N/A</Typography>
         }

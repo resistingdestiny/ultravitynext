@@ -13,18 +13,6 @@ const TabBilling = ({ apiPricingPlanData }) => {
       <Grid item xs={12}>
         <CurrentPlanCard data={apiPricingPlanData} />
       </Grid>
-
-      <Grid item xs={12}>
-        <PaymentMethodCard />
-      </Grid>
-
-      <Grid item xs={12}>
-        <BillingAddressCard />
-      </Grid>
-
-      <Grid item xs={12}>
-        <BillingHistoryTable />
-      </Grid>
     </Grid>
   )
 }
