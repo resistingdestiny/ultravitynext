@@ -201,9 +201,12 @@ const DialogAddCard = props => {
                       <TableRow>
                         <TableCell style={{ fontWeight: 'bold' }}>Name</TableCell>
                         <TableCell>
-                          <Box marginRight={16}>
-                            <TextField size='small' value='name' onChange={event => setName(event.target.value)} />
-                          </Box>
+                          <TextField
+                            size='small'
+                            placeholder={contract}
+                            onChange={event => setName(event.target.value)}
+                          />
+
                           <Button variant='outlined' color='secondary'>
                             Add
                           </Button>
@@ -211,15 +214,15 @@ const DialogAddCard = props => {
                       </TableRow>
                       <TableRow>
                         <TableCell style={{ fontWeight: 'bold' }}>Score</TableCell>
-                        <TableCell>21</TableCell>
+                        <TableCell>{resJson.score.total_score}</TableCell>
                       </TableRow>
                       <TableRow>
-                        <TableCell style={{ fontWeight: 'bold' }}>Description</TableCell>
-                        <TableCell>Hello</TableCell>
+                        <TableCell style={{ fontWeight: 'bold' }}>Recommendation</TableCell>
+                        <TableCell>{resJson.score.recommendation}</TableCell>
                       </TableRow>
                       <TableRow>
                         <TableCell style={{ fontWeight: 'bold' }}>Address</TableCell>
-                        <TableCell>Test</TableCell>
+                        <TableCell>{contract}</TableCell>
                       </TableRow>
                     </TableBody>
                   </Table>

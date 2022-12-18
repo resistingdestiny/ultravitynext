@@ -44,6 +44,7 @@ const AnalyticsDashboard = () => {
         popularity: item[0].radar_chart.popularity,
         reliability: item[0].radar_chart.reliability,
         credibility: item[0].radar_chart.credibility,
+
         recommendation: item[0].recommendation
       }
     })
