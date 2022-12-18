@@ -1,4 +1,5 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo, useContext, createContext } from 'react'
+import queryString from 'query-string'
 import {
   getAuth,
   onAuthStateChanged,
@@ -22,12 +23,19 @@ import {
 } from 'firebase/auth'
 import Firebase from 'src/configs/firebase'
 import { useUser, createUser, updateUser } from 'src/util/db'
+import router from 'next/router'
+import { getFriendlyPlanId } from '/src/util/prices'
 const formatAuthUser = user => {
   return {
     uid: user.uid,
     email: user.email
   }
 }
+
+// Whether to merge extra user data from database into `auth.user`
+const MERGE_DB_USER = true
+// Whether to send email verification on signup
+const EMAIL_VERIFICATION = true
 
 // Wait for Firebase user to be initialized before resolving promise
 // and taking any further action (such as writing to the database)

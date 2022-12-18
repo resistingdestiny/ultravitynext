@@ -28,8 +28,6 @@ const AnalyticsDashboard = () => {
   authUser ? console.log(authUser.api_calls) : console.log('no user')
   const setRefresh = () => {}
   const { data: items, status: itemsStatus, error: itemsError } = useItemsByOwner(authUser?.uid)
-  console.log(items)
-  console.log('hello')
   useEffect(() => {
     setRefresh()
   }, [useItemsByOwner(authUser?.uid)])
