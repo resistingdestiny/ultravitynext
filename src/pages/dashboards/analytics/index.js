@@ -18,6 +18,7 @@ import ReactApexcharts from 'src/@core/components/react-apexcharts'
 // ** Demo Components Imports
 import useFirebaseAuth from 'src/hooks/useFirebaseAuth.js'
 import { updateItem, deleteItem, useItemsByOwner } from 'src/util/db'
+import { useEffect } from 'react'
 
 import AnalyticsCongratulations from 'src/views/dashboards/analytics/AnalyticsCongratulations'
 import { useLatestItemByOwner } from 'src/util/db.js'
@@ -25,7 +26,13 @@ import CrmTable from 'src/views/dashboards/crm/CrmTable'
 const AnalyticsDashboard = () => {
   const { authUser, loading, auth, signout } = useFirebaseAuth()
   authUser ? console.log(authUser.api_calls) : console.log('no user')
+  const setRefresh = () => {}
   const { data: items, status: itemsStatus, error: itemsError } = useItemsByOwner(authUser?.uid)
+  console.log(items)
+  console.log('hello')
+  useEffect(() => {
+    setRefresh()
+  }, [useItemsByOwner(authUser?.uid)])
   let contract_data = []
   if (itemsStatus === 'success') {
     contract_data = items.map((item, index) => {
@@ -120,7 +127,7 @@ const AnalyticsDashboard = () => {
           <AnalyticsCongratulations user_id={authUser ? authUser.uid : 'missing'} signout={signout} />
         </Grid>
         <Grid item md={4} sm={3} xs={12}>
-          <DialogAddCard user_id={authUser ? authUser.uid : 'missing'} />
+          <DialogAddCard setRefresh={setRefresh} user_id={authUser ? authUser.uid : 'missing'} />
         </Grid>
         <Grid item xs={6} md={2}>
           <CardStatisticsVertical

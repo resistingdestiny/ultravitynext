@@ -58,6 +58,7 @@ const DialogAddCard = props => {
     setShow(false)
     setFocus(undefined)
     setResJson(false)
+    props.setRefresh(true)
   }
 
   const handleSubmit = async e => {
