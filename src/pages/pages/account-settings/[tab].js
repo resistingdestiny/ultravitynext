@@ -22,13 +22,13 @@ export const getStaticPaths = () => {
 }
 
 export const getStaticProps = async ({ params }) => {
-  const res = await axios.get('/pages/pricing')
-  const data = res.data
+  /*   const res = await axios.get('/pages/pricing')
+  const data = res.data */
 
   return {
     props: {
-      tab: params?.tab,
-      apiPricingPlanData: data.pricingPlans
+      tab: params?.tab
+      // apiPricingPlanData: data.pricingPlans
     }
   }
 }
