@@ -1,4 +1,5 @@
 import { useState } from 'react'
+import { useEffect } from 'react'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -12,15 +13,22 @@ import { updateItem, deleteItem, useItemsByOwner } from 'src/util/db'
 import QuickSearchToolbar from 'src/views/table/data-grid/QuickSearchToolbar'
 import { DialogViewCard } from 'src/views/pages/dialog-examples/DialogViewCard'
 const CrmTable = props => {
+  const [items, setItems] = useState(props.contract_data)
   const [selectedRow, setSelectedRow] = useState(null)
   const [showDialogViewCard, setShowDialogViewCard] = useState(false)
-
-  const items = props.contract_data
+  useEffect(() => {
+    setItems(props.contract_data)
+  }, [props.contract_data])
   const rows = items || []
-  const toggleDialogViewCard = () => {
-    setShowDialogViewCard(!showDialogViewCard)
-  }
+
   const columns = [
+    {
+      flex: 0.025,
+      minWidth: 100,
+      field: 'name',
+      headerName: 'name',
+      renderCell: ({ row }) => <Typography variant='body2'>{row.name}</Typography>
+    },
     {
       flex: 0.1,
       minWidth: 250,
@@ -127,7 +135,6 @@ const CrmTable = props => {
         <DialogViewCard
           showDialogViewCard={showDialogViewCard}
           rowData={selectedRow}
-          toggleDialogViewCard={toggleDialogViewCard}
           setShowDialogViewCard={setShowDialogViewCard}
         />
       )}

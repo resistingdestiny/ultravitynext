@@ -21,7 +21,7 @@ import TableHead from '@mui/material/TableHead'
 import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
-
+import { updateItem } from 'src/util/db'
 // ** Styles Import
 import 'react-credit-cards/es/styles-compiled.css'
 
@@ -33,31 +33,38 @@ const Transition = forwardRef(function Transition(props, ref) {
 })
 
 const DialogViewCard = props => {
+  const [nickname, setNickname] = useState(props.rowData.row.name)
   const [contract, setContract] = useState('')
   const [report, setReport] = useState('')
   const [name, setName] = useState('')
   const [chain, setChain] = useState('ethereum')
   const [chartData, setChartData] = useState([])
   const [makeReport, setMakeReport] = useState(false)
+  const [buttonText, setButtonText] = useState('Add')
+  const [showHistory, setShowHistory] = useState(false)
+
+  const handleAdd = () => {
+    updateItem(props.rowData.id, { name: nickname })
+    setButtonText('Added')
+  }
 
   // ** States
   const [show, setShow] = useState(props.showDialogViewCard)
-
+  const handleHistory = () => {
+    setShowHistory(true)
+  }
   const handleClose = () => {
     setShow(false)
     props.setShowDialogViewCard(false)
-    console.log(props.rowData)
   }
   const handleReport = () => {
     if (makeReport) {
-      console.log('submitted')
       setShow(false)
       setMakeReport(false)
     } else {
       setMakeReport(true)
     }
   }
-  console.log(props.rowData.row.longevity)
   useEffect(() => {
     setChartData([
       props.rowData.row.longevity,
@@ -67,7 +74,6 @@ const DialogViewCard = props => {
       props.rowData.row.immutability
     ])
   }, [])
-  console.log(chartData)
   return (
     <Card>
       <Dialog
@@ -85,10 +91,10 @@ const DialogViewCard = props => {
           </IconButton>
           <Box sx={{ mb: 4, textAlign: 'center' }}>
             <Typography variant='h5' sx={{ mb: 3, lineHeight: '2rem' }}>
-              {makeReport ? 'Report Contract' : 'View Contract'}
+              {makeReport ? 'Report Contract' : showHistory ? 'View History' : 'View Contract'}
             </Typography>
           </Box>
-          {!makeReport && (
+          {!makeReport && !showHistory && (
             <Box>
               <ViewContract chartData={chartData} />
               <TableContainer component={Paper}>
@@ -103,13 +109,9 @@ const DialogViewCard = props => {
                     <TableRow>
                       <TableCell style={{ fontWeight: 'bold' }}>Name</TableCell>
                       <TableCell>
-                        <TextField
-                          size='small'
-                          value={props.rowData.name}
-                          onChange={event => setName(event.target.value)}
-                        />
-                        <Button variant='outlined' color='secondary'>
-                          Add
+                        <TextField size='small' value={nickname} onChange={event => setNickname(event.target.value)} />
+                        <Button variant='outlined' color='secondary' onClick={handleAdd}>
+                          {props.rowData.row.name ? 'Update' : buttonText}
                         </Button>
                       </TableCell>
                     </TableRow>
@@ -132,7 +134,46 @@ const DialogViewCard = props => {
               <Typography variant='body2'></Typography>
             </Box>
           )}
-          {makeReport && (
+          {showHistory && (
+            <Box>
+              <TableContainer component={Paper}>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell variant='head'></TableCell>
+                      <TableCell variant='head'></TableCell>
+                    </TableRow>
+                  </TableHead>
+                  <TableBody>
+                    <TableRow>
+                      <TableCell style={{ fontWeight: 'bold' }}>Name</TableCell>
+                      <TableCell>
+                        <TextField size='small' value={nickname} onChange={event => setNickname(event.target.value)} />
+                        <Button variant='outlined' color='secondary' onClick={handleAdd}>
+                          {props.rowData.row.name ? 'Update' : buttonText}
+                        </Button>
+                      </TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell style={{ fontWeight: 'bold' }}>Score</TableCell>
+                      <TableCell>{props.rowData.row.score}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell style={{ fontWeight: 'bold' }}>Description</TableCell>
+                      <TableCell>{props.rowData.row.recommendation}</TableCell>
+                    </TableRow>
+                    <TableRow>
+                      <TableCell style={{ fontWeight: 'bold' }}>Address</TableCell>
+                      <TableCell>{props.rowData.id.substr(0, 42)}</TableCell>
+                    </TableRow>
+                  </TableBody>
+                </Table>
+              </TableContainer>
+
+              <Typography variant='body2'></Typography>
+            </Box>
+          )}
+          {makeReport && !showHistory && (
             <form>
               <Grid container spacing={3}>
                 <Grid item xs={12} sx={{ pt: theme => `${theme.spacing(5)} !important` }}>
@@ -182,6 +223,9 @@ const DialogViewCard = props => {
           )}
         </DialogContent>
         <DialogActions sx={{ pb: { xs: 8, sm: 12.5 }, justifyContent: 'center' }}>
+          <Button variant='outlined' color='primary' onClick={handleHistory}>
+            History
+          </Button>
           <Button variant='outlined' color='primary' onClick={handleClose}>
             Close
           </Button>

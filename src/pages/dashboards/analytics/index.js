@@ -4,9 +4,11 @@ import Card from '@mui/material/Card'
 import { useTheme } from '@mui/material/styles'
 import CardHeader from '@mui/material/CardHeader'
 import CardContent from '@mui/material/CardContent'
+import Box from '@mui/material/Box'
 
 // ** Icon Imports
 import Icon from 'src/@core/components/icon'
+import Paper from '@mui/material/Paper'
 
 // ** Custom Component Import
 import CardStatisticsVertical from 'src/@core/components/card-statistics/card-stats-vertical'
@@ -18,7 +20,14 @@ import ReactApexcharts from 'src/@core/components/react-apexcharts'
 // ** Demo Components Imports
 import useFirebaseAuth from 'src/hooks/useFirebaseAuth.js'
 import { updateItem, deleteItem, useItemsByOwner } from 'src/util/db'
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
+import TextField from '@mui/material/TextField'
+import Table from '@mui/material/Table'
+import TableRow from '@mui/material/TableRow'
+import TableHead from '@mui/material/TableHead'
+import TableBody from '@mui/material/TableBody'
+import TableCell from '@mui/material/TableCell'
+import TableContainer from '@mui/material/TableContainer'
 
 import AnalyticsCongratulations from 'src/views/dashboards/analytics/AnalyticsCongratulations'
 import { useLatestItemByOwner } from 'src/util/db.js'
@@ -26,12 +35,11 @@ import CrmTable from 'src/views/dashboards/crm/CrmTable'
 const AnalyticsDashboard = () => {
   const { authUser, loading, auth, signout } = useFirebaseAuth()
   authUser ? console.log(authUser.api_calls) : console.log('no user')
-  const setRefresh = () => {}
+  const [refresh, setRefresh] = useState(false)
   const { data: items, status: itemsStatus, error: itemsError } = useItemsByOwner(authUser?.uid)
-  useEffect(() => {
-    setRefresh()
-  }, [useItemsByOwner(authUser?.uid)])
+  console.log(items)
   let contract_data = []
+
   if (itemsStatus === 'success') {
     contract_data = items.map((item, index) => {
       return {
@@ -44,7 +52,7 @@ const AnalyticsDashboard = () => {
         popularity: item[0].radar_chart.popularity,
         reliability: item[0].radar_chart.reliability,
         credibility: item[0].radar_chart.credibility,
-
+        name: item.name,
         recommendation: item[0].recommendation
       }
     })
@@ -56,7 +64,6 @@ const AnalyticsDashboard = () => {
   if (latest && latest.length > 0) {
     const firstItem = latest.slice(0, 1)
     const firstRadar = firstItem[0][0].radar_chart
-    console.log(firstRadar)
     series = [
       {
         name: 'Contract Data',
@@ -165,6 +172,36 @@ const AnalyticsDashboard = () => {
               }}
             >
               <ReactApexcharts type='radar' height={278} series={series} options={options} />
+              {latest && latest.length > 1 ? (
+                <Box>
+                  <TableContainer component={Paper}>
+                    <Table>
+                      <TableHead>
+                        <TableRow>
+                          <TableCell variant='head'></TableCell>
+                          <TableCell variant='head'></TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        <TableRow>
+                          <TableCell style={{ fontWeight: 'bold' }}>Score</TableCell>
+                          <TableCell>xx</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell style={{ fontWeight: 'bold' }}>Description</TableCell>
+                          <TableCell>xx</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell style={{ fontWeight: 'bold' }}>Address</TableCell>
+                          <TableCell>xx</TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                </Box>
+              ) : (
+                <Grid></Grid>
+              )}
             </CardContent>
           </Card>
         </Grid>
