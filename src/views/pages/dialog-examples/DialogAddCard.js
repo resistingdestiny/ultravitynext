@@ -1,5 +1,6 @@
 // ** React Imports
 import { useState, forwardRef } from 'react'
+import Alert from '@mui/material/Alert'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -24,9 +25,11 @@ import Table from '@mui/material/Table'
 import TableRow from '@mui/material/TableRow'
 import TableHead from '@mui/material/TableHead'
 import TableBody from '@mui/material/TableBody'
+
 import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
 import Paper from '@mui/material/Paper'
+import { updateItem } from 'src/util/db'
 
 // ** Styles Import
 import 'react-credit-cards/es/styles-compiled.css'
@@ -37,10 +40,13 @@ import Icon from 'src/@core/components/icon'
 const Transition = forwardRef(function Transition(props, ref) {
   return <Fade ref={ref} {...props} />
 })
+import useFirebaseAuth from 'src/hooks/useFirebaseAuth.js'
 
 const DialogAddCard = props => {
+  const [buttonText, setButtonText] = useState('Add')
+  const { authUser, loading, auth, signout } = useFirebaseAuth()
+
   const [pending, setPending] = useState(false)
-  const [formAlert, setFormAlert] = useState(null)
   const [name, setName] = useState('')
   const [contract, setContract] = useState('')
   const [chain, setChain] = useState('ethereum')
@@ -48,7 +54,17 @@ const DialogAddCard = props => {
   const [showProgress, setShowProgress] = useState(false)
   const [resJson, setResJson] = useState(false) // add this line
   const [chartData, setChartData] = useState([])
-
+  const [formAlert, setFormAlert] = useState({ type: '', message: '' })
+  const [nickname, setNickname] = useState(`${contract}_${chain}_${api_key}`)
+  const handleAdd = () => {
+    console.log(`${contract}_${chain}_${api_key}`)
+    updateItem(`${contract}_${chain}_${api_key}`, { name: nickname })
+    setButtonText('Added')
+    setFormAlert({
+      type: 'success',
+      message: 'Name added successfully'
+    })
+  }
   // ** States
   const [show, setShow] = useState(false)
   const [focus, setFocus] = useState()
@@ -62,6 +78,10 @@ const DialogAddCard = props => {
   }
 
   const handleSubmit = async e => {
+    setFormAlert({
+      type: 'pending',
+      message: 'Building your smart contract report...'
+    })
     e.preventDefault()
     setPending(true)
     setShowProgress(true) // Show the CircularProgress component
@@ -130,6 +150,9 @@ const DialogAddCard = props => {
             <Icon icon='mdi:close' />
           </IconButton>
           <Box sx={{ mb: 4, textAlign: 'center' }}>
+            {formAlert.type === 'pending' ? <Alert severity='info'>{formAlert.message}</Alert> : null}
+            {formAlert.type === 'success' ? <Alert severity='success'>{formAlert.message}</Alert> : null}
+            {formAlert.type === 'error' ? <Alert severity='error'>{formAlert.message}</Alert> : null}
             <Typography variant='h5' sx={{ mb: 3, lineHeight: '2rem' }}>
               {!resJson ? 'Add New Contract' : 'View Contract'}
             </Typography>
@@ -198,20 +221,26 @@ const DialogAddCard = props => {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      <TableRow>
+                      {/*  <TableRow>
                         <TableCell style={{ fontWeight: 'bold' }}>Name</TableCell>
                         <TableCell>
-                          <TextField
-                            size='small'
-                            placeholder={contract}
-                            onChange={event => setName(event.target.value)}
-                          />
-
-                          <Button variant='outlined' color='secondary'>
-                            Add
-                          </Button>
+                          <Grid container spacing={2}>
+                            <Grid item xs={6}>
+                              <TextField
+                                size='small'
+                                value={nickname}
+                                onChange={event => setNickname(event.target.value)}
+                              />
+                            </Grid>
+                            <Grid item xs={2}>
+                              <Button variant='outlined' color='secondary' onClick={handleAdd}>
+                                {resJson.id ? 'Update' : buttonText}
+                              </Button>
+                            </Grid>
+                          </Grid>
                         </TableCell>
-                      </TableRow>
+                      </TableRow> */}
+
                       <TableRow>
                         <TableCell style={{ fontWeight: 'bold' }}>Score</TableCell>
                         <TableCell>{resJson.score.total_score}</TableCell>

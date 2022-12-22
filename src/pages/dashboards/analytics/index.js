@@ -40,20 +40,20 @@ const AnalyticsDashboard = () => {
   console.log(items)
   let contract_data = []
 
-  if (itemsStatus === 'success') {
+  if (items && itemsStatus === 'success') {
     contract_data = items.map((item, index) => {
       return {
         id: item.id,
         created_at: item.created_at,
         name: item.id.substr(0, 20).concat('...'),
         score: item[0].total_score, //item[item.length - 2].recent_contract.score.total_score
-        longevity: item[0].radar_chart.longevity,
-        immutability: item[0].radar_chart.immutability,
-        popularity: item[0].radar_chart.popularity,
-        reliability: item[0].radar_chart.reliability,
-        credibility: item[0].radar_chart.credibility,
+        longevity: item[0]?.radar_chart?.longevity,
+        immutability: item[0]?.radar_chart?.immutability,
+        popularity: item[0]?.radar_chart?.popularity,
+        reliability: item[0]?.radar_chart?.reliability,
+        credibility: item[0]?.radar_chart?.credibility,
         name: item.name,
-        recommendation: item[0].recommendation
+        recommendation: item[0]?.recommendation
       }
     })
   }
@@ -61,21 +61,25 @@ const AnalyticsDashboard = () => {
   let firstItem = []
   let firstRadar = []
   let series = []
+  let address
+  let score
   if (latest && latest.length > 0) {
     const firstItem = latest.slice(0, 1)
-    const firstRadar = firstItem[0][0].radar_chart
+    const firstRadar = firstItem[0]
     series = [
       {
         name: 'Contract Data',
         data: [
-          firstRadar.longevity,
-          firstRadar.reliability,
-          firstRadar.credibility,
-          firstRadar.popularity,
-          firstRadar.immutability
+          firstRadar[0]?.radar_chart?.longevity || 0,
+          firstRadar[0]?.radar_chart?.reliability || 0,
+          firstRadar[0]?.radar_chart?.credibility || 0,
+          firstRadar[0]?.radar_chart?.popularity || 0,
+          firstRadar[0]?.radar_chart?.immutability || 0
         ]
       }
     ]
+    address = firstRadar.id
+    score = firstRadar[0]?.total_score
   } else {
     console.log('no radar data')
   }
@@ -185,15 +189,12 @@ const AnalyticsDashboard = () => {
                       <TableBody>
                         <TableRow>
                           <TableCell style={{ fontWeight: 'bold' }}>Score</TableCell>
-                          <TableCell>xx</TableCell>
+                          <TableCell>{Math.round(score)}</TableCell>
                         </TableRow>
-                        <TableRow>
-                          <TableCell style={{ fontWeight: 'bold' }}>Description</TableCell>
-                          <TableCell>xx</TableCell>
-                        </TableRow>
+
                         <TableRow>
                           <TableCell style={{ fontWeight: 'bold' }}>Address</TableCell>
-                          <TableCell>xx</TableCell>
+                          <TableCell>{address.substring(0, 25) + '...'}</TableCell>
                         </TableRow>
                       </TableBody>
                     </Table>

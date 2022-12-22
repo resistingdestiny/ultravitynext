@@ -81,14 +81,11 @@ const LoginPage = () => {
 
   const login = e => {
     e.preventDefault()
-    signInWithEmailAndPassword(email, password)
-      .then(res => {
-        router.push('/')
-      })
-      .catch(err => {
-        // Handle the error
-        console.log(err)
-      })
+    try {
+      signInWithEmailAndPassword(email, password)
+    } catch (err) {
+      console.log(err)
+    }
   }
 
   // ** State
