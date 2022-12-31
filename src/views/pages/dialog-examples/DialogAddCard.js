@@ -30,6 +30,7 @@ import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
 import Paper from '@mui/material/Paper'
 import { updateItem } from 'src/util/db'
+import { useForm } from 'react-hook-form'
 
 // ** Styles Import
 import 'react-credit-cards/es/styles-compiled.css'
@@ -45,6 +46,7 @@ import useFirebaseAuth from 'src/hooks/useFirebaseAuth.js'
 const DialogAddCard = props => {
   const [buttonText, setButtonText] = useState('Add')
   const { authUser, loading, auth, signout } = useFirebaseAuth()
+  const { register } = useForm()
 
   const [pending, setPending] = useState(false)
   const [name, setName] = useState('')
@@ -170,17 +172,17 @@ const DialogAddCard = props => {
                       value={contract}
                       placeholder='Contract'
                       onChange={e => setContract(e.target.value)}
-                      /*  inputRef={register({
-                      required: 'Please enter a contract address',
-                      minLength: {
-                        value: 41,
-                        message: 'Please enter a valid smart contract address'
-                      },
-                      maxLength: {
-                        value: 43,
-                        message: 'Please enter a valid smart contract address'
-                      }
-                    })} */
+                      /* inputRef={register({
+                        required: 'Please enter a contract address',
+                        minLength: {
+                          value: 41,
+                          message: 'Please enter a valid smart contract address'
+                        },
+                        maxLength: {
+                          value: 43,
+                          message: 'Please enter a valid smart contract address'
+                        }
+                      })} */
                       fullWidth
                       autoComplete='off'
                       label='Contract Address'
