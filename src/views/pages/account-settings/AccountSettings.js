@@ -15,6 +15,7 @@ import { styled } from '@mui/material/styles'
 import useMediaQuery from '@mui/material/useMediaQuery'
 import MuiTabList from '@mui/lab/TabList'
 import CircularProgress from '@mui/material/CircularProgress'
+import useFirebaseAuth from 'src/hooks/useFirebaseAuth.js'
 
 // ** Icon Imports
 import Icon from 'src/@core/components/icon'
@@ -24,7 +25,6 @@ import TabAccount from 'src/views/pages/account-settings/TabAccount'
 import TabBilling from 'src/views/pages/account-settings/TabBilling'
 import TabSecurity from 'src/views/pages/account-settings/TabSecurity'
 import TabConnections from 'src/views/pages/account-settings/TabConnections'
-import TabNotifications from 'src/views/pages/account-settings/TabNotifications'
 
 const TabList = styled(MuiTabList)(({ theme }) => ({
   '& .MuiTabs-indicator': {
@@ -46,6 +46,7 @@ const TabList = styled(MuiTabList)(({ theme }) => ({
 
 const AccountSettings = ({ tab, apiPricingPlanData }) => {
   // ** State
+  const { authUser, loading, auth, signout } = useFirebaseAuth()
   const [activeTab, setActiveTab] = useState(tab)
   const [isLoading, setIsLoading] = useState(false)
 
@@ -65,9 +66,9 @@ const AccountSettings = ({ tab, apiPricingPlanData }) => {
   }, [tab])
 
   const tabContentList = {
-    account: <TabAccount />,
-    security: <TabSecurity />,
-    connections: <TabConnections />,
+    account: <TabAccount user={authUser} />,
+    security: <TabSecurity user={authUser} />,
+    connections: <TabConnections user={authUser} />,
     billing: <TabBilling apiPricingPlanData={apiPricingPlanData} />
   }
 

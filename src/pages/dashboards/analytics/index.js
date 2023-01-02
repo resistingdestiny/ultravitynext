@@ -20,7 +20,6 @@ import ReactApexcharts from 'src/@core/components/react-apexcharts'
 // ** Demo Components Imports
 import useFirebaseAuth from 'src/hooks/useFirebaseAuth.js'
 import { useItemsByOwner, invalidateOwnerItems } from 'src/util/db'
-import { useState } from 'react'
 import Table from '@mui/material/Table'
 import TableRow from '@mui/material/TableRow'
 import TableHead from '@mui/material/TableHead'

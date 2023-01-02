@@ -70,8 +70,7 @@ const ResetButtonStyled = styled(Button)(({ theme }) => ({
   }
 }))
 
-const TabAccount = () => {
-  const { authUser, loading, auth, signout } = useFirebaseAuth()
+const TabAccount = props => {
   // ** State
   const [open, setOpen] = useState(false)
   const [inputValue, setInputValue] = useState('')
@@ -132,8 +131,8 @@ const TabAccount = () => {
                     fullWidth
                     type='email'
                     label='Email'
-                    value={authUser ? authUser.email : 'Missing'}
-                    placeholder={authUser ? authUser.email : 'Missing'}
+                    value={props.user ? props.user.email : 'Missing'}
+                    placeholder={props.user ? props.user.email : 'Missing'}
                     onChange={e => handleFormChange('email', e.target.value)}
                   />
                 </Grid>
