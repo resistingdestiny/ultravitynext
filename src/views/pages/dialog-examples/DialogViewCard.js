@@ -24,6 +24,8 @@ import TableBody from '@mui/material/TableBody'
 import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
 import { updateItem } from 'src/util/db'
+import ApexLineChart from 'src/views/charts/apex-charts/ApexLineChart'
+
 // ** Styles Import
 import 'react-credit-cards/es/styles-compiled.css'
 import useFirebaseAuth from 'src/hooks/useFirebaseAuth.js'
@@ -156,32 +158,36 @@ const DialogViewCard = props => {
             </Box>
           )}
           {showHistory && (
-            <TableContainer>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell>Score</TableCell>
-                    <TableCell>Time</TableCell>
-                  </TableRow>
-                </TableHead>
+            <Box>
+              <TableContainer>
+                <Table>
+                  <TableHead>
+                    <TableRow>
+                      <TableCell>Score</TableCell>
+                      <TableCell>Time</TableCell>
+                    </TableRow>
+                  </TableHead>
 
-                {Object.keys(itemHistory).map(
-                  (historyItem, index) =>
-                    typeof itemHistory[historyItem].total_score === 'number' && (
-                      <TableBody>
-                        <TableRow key={index}>
-                          <TableCell>{itemHistory[historyItem].total_score}</TableCell>
-                          <TableCell>
-                            {dateFormatter.format(new Date(itemHistory[historyItem].timestamp * 1000))}
-                          </TableCell>
-                        </TableRow>
-                      </TableBody>
-                    )
-                )}
+                  {Object.keys(itemHistory).map(
+                    (historyItem, index) =>
+                      typeof itemHistory[historyItem].total_score === 'number' && (
+                        <TableBody>
+                          <TableRow key={index}>
+                            <TableCell>{itemHistory[historyItem].total_score}</TableCell>
+                            <TableCell>
+                              {dateFormatter.format(new Date(itemHistory[historyItem].timestamp * 1000))}
+                            </TableCell>
+                          </TableRow>
+                        </TableBody>
+                      )
+                  )}
 
-                {/* <TableBody>{itemHistory[0].total_score}</TableBody> */}
-              </Table>
-            </TableContainer>
+                  {/* <TableBody>{itemHistory[0].total_score}</TableBody> */}
+                </Table>
+              </TableContainer>
+
+              <ApexLineChart itemHistory={itemHistory} />
+            </Box>
           )}
 
           {makeReport && !showHistory && (

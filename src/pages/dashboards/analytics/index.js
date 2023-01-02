@@ -161,15 +161,7 @@ const AnalyticsDashboard = () => {
 
         <Grid item xs={12} sm={6} md={4}>
           <Card>
-            <CardHeader
-              title='Last Contract'
-              action={
-                <OptionsMenu
-                  options={['Last 28 Days', 'Last Month', 'Last Year']}
-                  iconButtonProps={{ size: 'small', className: 'card-more-options' }}
-                />
-              }
-            />
+            <CardHeader title='Last Contract' />
             <CardContent
               sx={{
                 pt: { xs: `${theme.spacing(6)} !important`, md: `${theme.spacing(0)} !important` },

@@ -84,7 +84,6 @@ const DialogAddCard = props => {
     setShow(false)
     setFocus(undefined)
     setResJson(false)
-    props.setRefresh(true)
     invalidateOwnerItems(authUser?.uid)
   }
 
@@ -96,7 +95,6 @@ const DialogAddCard = props => {
     e.preventDefault()
     setPending(true)
     setShowProgress(true) // Show the CircularProgress component
-    props.setRefresh(true)
     try {
       let res = await fetch(
         `https://ultravity.herokuapp.com/api/score?contract_address=${contract}&chain=${chain}&api_key=${api_key}`,
