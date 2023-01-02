@@ -25,6 +25,8 @@ import Table from '@mui/material/Table'
 import TableRow from '@mui/material/TableRow'
 import TableHead from '@mui/material/TableHead'
 import TableBody from '@mui/material/TableBody'
+import { deleteItem, useItemsByOwner, invalidateOwnerItems } from 'src/util/db'
+import { useQueryClient } from 'react-query'
 
 import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
@@ -47,7 +49,12 @@ const DialogAddCard = props => {
   const [buttonText, setButtonText] = useState('Add')
   const { authUser, loading, auth, signout } = useFirebaseAuth()
   const { register } = useForm()
+  const queryClient = useQueryClient()
 
+  const invalidateOwnerItems = owner => {
+    queryClient.invalidateQueries(['items', { owner }])
+    queryClient.invalidateQueries(['latestItemByOwner', { owner }])
+  }
   const [pending, setPending] = useState(false)
   const [name, setName] = useState('')
   const [contract, setContract] = useState('')
@@ -59,6 +66,7 @@ const DialogAddCard = props => {
   const [formAlert, setFormAlert] = useState({ type: '', message: '' })
   const [nickname, setNickname] = useState(`${contract}_${chain}_${api_key}`)
   const handleAdd = () => {
+    invalidateOwnerItems(authUser?.uid)
     console.log(`${contract}_${chain}_${api_key}`)
     updateItem(`${contract}_${chain}_${api_key}`, { name: nickname })
     setButtonText('Added')
@@ -77,6 +85,7 @@ const DialogAddCard = props => {
     setFocus(undefined)
     setResJson(false)
     props.setRefresh(true)
+    invalidateOwnerItems(authUser?.uid)
   }
 
   const handleSubmit = async e => {

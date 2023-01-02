@@ -19,9 +19,8 @@ import OptionsMenu from 'src/@core/components/option-menu'
 import ReactApexcharts from 'src/@core/components/react-apexcharts'
 // ** Demo Components Imports
 import useFirebaseAuth from 'src/hooks/useFirebaseAuth.js'
-import { updateItem, deleteItem, useItemsByOwner } from 'src/util/db'
-import { useEffect, useState } from 'react'
-import TextField from '@mui/material/TextField'
+import { useItemsByOwner, invalidateOwnerItems } from 'src/util/db'
+import { useState } from 'react'
 import Table from '@mui/material/Table'
 import TableRow from '@mui/material/TableRow'
 import TableHead from '@mui/material/TableHead'
@@ -32,11 +31,16 @@ import TableContainer from '@mui/material/TableContainer'
 import AnalyticsCongratulations from 'src/views/dashboards/analytics/AnalyticsCongratulations'
 import { useLatestItemByOwner } from 'src/util/db.js'
 import CrmTable from 'src/views/dashboards/crm/CrmTable'
+
 const AnalyticsDashboard = () => {
   const { authUser, loading, auth, signout } = useFirebaseAuth()
-  authUser ? console.log(authUser.api_calls) : console.log('no user')
-  const [refresh, setRefresh] = useState(false)
+
   const { data: items, status: itemsStatus, error: itemsError } = useItemsByOwner(authUser?.uid)
+  /*  useEffect(() => {
+    invalidateOwnerItems(authUser?.uid)
+    setRefresh(false)
+    console.log('refreshed')
+  }, [refresh]) */
   let contract_data = []
 
   if (items && itemsStatus === 'success') {
@@ -57,8 +61,7 @@ const AnalyticsDashboard = () => {
     })
   }
   const { data: latest, status: latestStatus, error: latestError } = useLatestItemByOwner(authUser?.uid)
-  let firstItem = []
-  let firstRadar = []
+
   let series = []
   let address
   let score
@@ -136,11 +139,11 @@ const AnalyticsDashboard = () => {
           <AnalyticsCongratulations user_id={authUser ? authUser.uid : 'missing'} signout={signout} />
         </Grid>
         <Grid item md={4} sm={3} xs={12}>
-          <DialogAddCard setRefresh={setRefresh} user_id={authUser ? authUser.uid : 'missing'} />
+          <DialogAddCard invalidateOwnerItems={invalidateOwnerItems} user_id={authUser ? authUser.uid : 'missing'} />
         </Grid>
         <Grid item xs={6} md={2}>
           <CardStatisticsVertical
-            stats='N/A'
+            stats={items?.length}
             color='primary'
             title='Scored'
             chipText='So Far'
@@ -149,7 +152,7 @@ const AnalyticsDashboard = () => {
         </Grid>
         <Grid item xs={6} md={2}>
           <CardStatisticsVertical
-            stats='10'
+            stats={50 - items?.length}
             color='primary'
             title='Credits'
             chipText='Remaining'

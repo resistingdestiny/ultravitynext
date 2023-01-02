@@ -1,6 +1,7 @@
 // ** React Imports
 import { useState, useEffect, forwardRef } from 'react'
 import { useItem } from 'src/util/db'
+import { useQueryClient } from 'react-query'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -25,6 +26,7 @@ import TableContainer from '@mui/material/TableContainer'
 import { updateItem } from 'src/util/db'
 // ** Styles Import
 import 'react-credit-cards/es/styles-compiled.css'
+import useFirebaseAuth from 'src/hooks/useFirebaseAuth.js'
 
 // ** Icon Imports
 import Icon from 'src/@core/components/icon'
@@ -34,6 +36,8 @@ const Transition = forwardRef(function Transition(props, ref) {
 })
 
 const DialogViewCard = props => {
+  const { authUser, loading, auth, signout } = useFirebaseAuth()
+
   const [nickname, setNickname] = useState(props.rowData.row.name)
   const [contract, setContract] = useState('')
   const [report, setReport] = useState('')
@@ -60,9 +64,16 @@ const DialogViewCard = props => {
   const handleHistory = () => {
     setShowHistory(true)
   }
+  const queryClient = useQueryClient()
+  const invalidateOwnerItems = owner => {
+    queryClient.invalidateQueries(['items', { owner }])
+    queryClient.invalidateQueries(['latestItemByOwner', { owner }])
+  }
+
   const handleClose = () => {
     setShow(false)
     props.setShowDialogViewCard(false)
+    invalidateOwnerItems(authUser?.uid)
   }
   const handleReport = () => {
     if (makeReport) {
