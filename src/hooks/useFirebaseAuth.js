@@ -51,6 +51,11 @@ const waitForFirebase = uid => {
   })
 }
 
+// Create a `useAuth` hook and `AuthProvider` that enables
+// any component to subscribe to auth and re-render when it changes.
+const authContext = createContext()
+export const useAuth = () => useContext(authContext)
+
 const useFirebaseAuth = () => {
   const [authUser, setAuthUser] = useState(null)
   const [loading, setLoading] = useState(true)
@@ -80,6 +85,7 @@ const useFirebaseAuth = () => {
         }
       })
   }
+
   // Store auth user in state
   // `user` will be object, `null` (loading) or `false` (logged out)
   const [user, setUser] = useState(null)
@@ -109,13 +115,36 @@ const useFirebaseAuth = () => {
     return () => unsubscribe()
   }, [])
 
+  const updatePassword = newPassword => {
+    return authUpdatePassword(auth.currentUser, newPassword)
+  }
+
   return {
     loading,
     signOut,
     authUser,
     signInWithEmailAndPassword,
-    createUserWithEmailAndPassword
+    createUserWithEmailAndPassword,
+    updatePassword
   }
 }
 
 export default useFirebaseAuth
+
+// Handle Firebase email link for reverting to original email after an email change
+export const handleRecoverEmail = async code => {
+  // Check that action code is valid
+  const info = await checkActionCode(auth, code)
+  // Revert to original email by applying action code
+  await applyActionCode(auth, code)
+  // Send password reset email so user can change their password in the case
+  // that someone else got into their account and changed their email.
+  await authSendPasswordResetEmail(auth, info.data.email)
+  // Return original email so it can be displayed by calling component
+  return info.data.email
+}
+
+// Handle Firebase email link for verifying email
+export const handleVerifyEmail = code => {
+  return applyActionCode(auth, code)
+}

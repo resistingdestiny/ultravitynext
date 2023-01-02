@@ -44,7 +44,6 @@ const Transition = forwardRef(function Transition(props, ref) {
   return <Fade ref={ref} {...props} />
 })
 import useFirebaseAuth from 'src/hooks/useFirebaseAuth.js'
-
 const DialogAddCard = props => {
   const [buttonText, setButtonText] = useState('Add')
   const { authUser, loading, auth, signout } = useFirebaseAuth()

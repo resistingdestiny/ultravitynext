@@ -15,7 +15,8 @@ import FormControl from '@mui/material/FormControl'
 import OutlinedInput from '@mui/material/OutlinedInput'
 import InputAdornment from '@mui/material/InputAdornment'
 import FormHelperText from '@mui/material/FormHelperText'
-
+import { updatePassword } from 'src/hooks/useFirebaseAuth.js'
+import useFirebaseAuth from 'src/hooks/useFirebaseAuth.js'
 // ** Icon Imports
 import Icon from 'src/@core/components/icon'
 
@@ -24,15 +25,14 @@ import * as yup from 'yup'
 import toast from 'react-hot-toast'
 import { useForm, Controller } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
+// const { authUser, loading, auth, signout } = useFirebaseAuth()
 
 const defaultValues = {
   newPassword: '',
-  currentPassword: '',
   confirmNewPassword: ''
 }
 
 const schema = yup.object().shape({
-  currentPassword: yup.string().min(8).required(),
   newPassword: yup
     .string()
     .min(8)
@@ -47,7 +47,7 @@ const schema = yup.object().shape({
     .oneOf([yup.ref('newPassword')], 'Passwords must match')
 })
 
-const ChangePasswordCard = () => {
+const ChangePasswordCard = props => {
   // ** States
   const [values, setValues] = useState({
     showNewPassword: false,
@@ -87,54 +87,18 @@ const ChangePasswordCard = () => {
     event.preventDefault()
   }
 
-  const onPasswordFormSubmit = () => {
+  const onPasswordFormSubmit = newPassword => {
+    // auth.updatePassword(newPassword)
     toast.success('Password Changed Successfully')
     reset(defaultValues)
+    console.log('Password Changed Successfully')
   }
 
   return (
     <Card>
       <CardHeader title='Change Password' />
       <CardContent>
-        <form onSubmit={handleSubmit(onPasswordFormSubmit)}>
-          <Grid container spacing={6}>
-            <Grid item xs={12} sm={6}>
-              <FormControl fullWidth>
-                <InputLabel htmlFor='input-current-password' error={Boolean(errors.currentPassword)}>
-                  Current Password
-                </InputLabel>
-                <Controller
-                  name='currentPassword'
-                  control={control}
-                  rules={{ required: true }}
-                  render={({ field: { value, onChange } }) => (
-                    <OutlinedInput
-                      value={value}
-                      label='Current Password'
-                      onChange={onChange}
-                      id='input-current-password'
-                      error={Boolean(errors.currentPassword)}
-                      type={values.showCurrentPassword ? 'text' : 'password'}
-                      endAdornment={
-                        <InputAdornment position='end'>
-                          <IconButton
-                            edge='end'
-                            onClick={handleClickShowCurrentPassword}
-                            onMouseDown={handleMouseDownCurrentPassword}
-                          >
-                            <Icon icon={values.showCurrentPassword ? 'mdi:eye-outline' : 'mdi:eye-off-outline'} />
-                          </IconButton>
-                        </InputAdornment>
-                      }
-                    />
-                  )}
-                />
-                {errors.currentPassword && (
-                  <FormHelperText sx={{ color: 'error.main' }}>{errors.currentPassword.message}</FormHelperText>
-                )}
-              </FormControl>
-            </Grid>
-          </Grid>
+        <form onSubmit={handleSubmit(e => onPasswordFormSubmit(props.user, 'hello'))}>
           <Grid container spacing={6} sx={{ mt: 0 }}>
             <Grid item xs={12} sm={6}>
               <FormControl fullWidth>

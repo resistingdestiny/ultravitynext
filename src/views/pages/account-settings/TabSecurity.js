@@ -20,11 +20,11 @@ import CreateApiKey from 'src/views/pages/account-settings/security/CreateApiKey
 import ChangePasswordCard from 'src/views/pages/account-settings/security/ChangePasswordCard'
 import TwoFactorAuthentication from 'src/views/pages/account-settings/security/TwoFactorAuthentication'
 
-const TabSecurity = () => {
+const TabSecurity = props => {
   return (
     <Grid container spacing={6}>
       <Grid item xs={12}>
-        <ChangePasswordCard />
+        <ChangePasswordCard user={props.user} />
       </Grid>
     </Grid>
   )

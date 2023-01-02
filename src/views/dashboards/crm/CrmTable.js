@@ -39,20 +39,17 @@ const CrmTable = props => {
     {
       flex: 0.05,
       minWidth: 50,
+      sortable: false,
       field: 'Score',
       headerName: 'Score',
-      renderCell: ({ row }) => {
-        try {
-          return <Typography variant='body2'>{Math.round(row.score)}</Typography>
-        } catch (error) {
-          return <Typography variant='body2'>N/A</Typography>
-        }
-      }
+      type: 'number',
+      renderCell: ({ row }) => <Typography variant='body2'>{Math.round(Number(row.score))}</Typography>
     },
     {
       flex: 0.2,
       minWidth: 250,
       field: 'Recommendation',
+      sortable: false,
       headerName: 'Recommendation',
       renderCell: ({ row }) => {
         try {
@@ -66,6 +63,7 @@ const CrmTable = props => {
       flex: 0.125,
       minWidth: 140,
       field: 'actions',
+      sortable: false,
       headerName: 'Actions',
       renderCell: ({ row }) => {
         return (
@@ -77,11 +75,11 @@ const CrmTable = props => {
     }
   ]
 
-  const [creatingItem, setCreatingItem] = useState(false)
+  const escapeRegExp = value => {
+    return value.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&')
+  }
 
-  const [updatingItemId, setUpdatingItemId] = useState(null)
-
-  const itemsAreEmpty = !items || items.length === 0
+  // ** States
   const [data] = useState(rows)
   const [pageSize, setPageSize] = useState(7)
   const [searchText, setSearchText] = useState('')
