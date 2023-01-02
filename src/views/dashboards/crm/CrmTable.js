@@ -16,6 +16,7 @@ const CrmTable = props => {
   const [items, setItems] = useState(props.contract_data)
   const [selectedRow, setSelectedRow] = useState(null)
   const [showDialogViewCard, setShowDialogViewCard] = useState(false)
+  console.log(items)
   useEffect(() => {
     setItems(props.contract_data)
   }, [props.contract_data])

@@ -84,7 +84,7 @@ export function getItem(id) {
 export function useItemsByOwner(owner) {
   return useQuery(
     ['items', { owner }],
-    createQuery(() => query(collection(db, 'items'), where('owner', '==', owner))),
+    createQuery(() => query(collection(db, 'items'), where('owner', '==', owner), orderBy('created_at', 'desc'))),
     { enabled: !!owner }
   )
 }

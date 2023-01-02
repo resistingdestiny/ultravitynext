@@ -37,7 +37,6 @@ const AnalyticsDashboard = () => {
   authUser ? console.log(authUser.api_calls) : console.log('no user')
   const [refresh, setRefresh] = useState(false)
   const { data: items, status: itemsStatus, error: itemsError } = useItemsByOwner(authUser?.uid)
-  console.log(items)
   let contract_data = []
 
   if (items && itemsStatus === 'success') {

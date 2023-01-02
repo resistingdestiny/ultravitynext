@@ -1,5 +1,6 @@
 // ** React Imports
 import { useState, useEffect, forwardRef } from 'react'
+import { useItem } from 'src/util/db'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -42,12 +43,18 @@ const DialogViewCard = props => {
   const [makeReport, setMakeReport] = useState(false)
   const [buttonText, setButtonText] = useState('Add')
   const [showHistory, setShowHistory] = useState(false)
-
   const handleAdd = () => {
     updateItem(props.rowData.id, { name: nickname })
     setButtonText('Added')
   }
-
+  const dateFormatter = new Intl.DateTimeFormat('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    second: '2-digit'
+  })
   // ** States
   const [show, setShow] = useState(props.showDialogViewCard)
   const handleHistory = () => {
@@ -65,6 +72,9 @@ const DialogViewCard = props => {
       setMakeReport(true)
     }
   }
+
+  const { data: itemHistory, status: itemHistoryStatus, error: itemsHistoryError } = useItem(props.rowData.id)
+  console.log(typeof itemHistory)
   useEffect(() => {
     setChartData([
       props.rowData.row.longevity,
@@ -135,44 +145,34 @@ const DialogViewCard = props => {
             </Box>
           )}
           {showHistory && (
-            <Box>
-              <TableContainer component={Paper}>
-                <Table>
-                  <TableHead>
-                    <TableRow>
-                      <TableCell variant='head'></TableCell>
-                      <TableCell variant='head'></TableCell>
-                    </TableRow>
-                  </TableHead>
-                  <TableBody>
-                    <TableRow>
-                      <TableCell style={{ fontWeight: 'bold' }}>Name</TableCell>
-                      <TableCell>
-                        <TextField size='small' value={nickname} onChange={event => setNickname(event.target.value)} />
-                        <Button variant='outlined' color='secondary' onClick={handleAdd}>
-                          {props.rowData.row.name ? 'Update' : buttonText}
-                        </Button>
-                      </TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell style={{ fontWeight: 'bold' }}>Score</TableCell>
-                      <TableCell>{props.rowData.row.score}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell style={{ fontWeight: 'bold' }}>Description</TableCell>
-                      <TableCell>{props.rowData.row.recommendation}</TableCell>
-                    </TableRow>
-                    <TableRow>
-                      <TableCell style={{ fontWeight: 'bold' }}>Address</TableCell>
-                      <TableCell>{props.rowData.id.substr(0, 42)}</TableCell>
-                    </TableRow>
-                  </TableBody>
-                </Table>
-              </TableContainer>
+            <TableContainer>
+              <Table>
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Score</TableCell>
+                    <TableCell>Time</TableCell>
+                  </TableRow>
+                </TableHead>
 
-              <Typography variant='body2'></Typography>
-            </Box>
+                {Object.keys(itemHistory).map(
+                  (historyItem, index) =>
+                    typeof itemHistory[historyItem].total_score === 'number' && (
+                      <TableBody>
+                        <TableRow key={index}>
+                          <TableCell>{itemHistory[historyItem].total_score}</TableCell>
+                          <TableCell>
+                            {dateFormatter.format(new Date(itemHistory[historyItem].timestamp * 1000))}
+                          </TableCell>
+                        </TableRow>
+                      </TableBody>
+                    )
+                )}
+
+                {/* <TableBody>{itemHistory[0].total_score}</TableBody> */}
+              </Table>
+            </TableContainer>
           )}
+
           {makeReport && !showHistory && (
             <form>
               <Grid container spacing={3}>
