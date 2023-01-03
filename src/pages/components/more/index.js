@@ -13,7 +13,6 @@ import CardContent from '@mui/material/CardContent'
 import TableContainer from '@mui/material/TableContainer'
 
 // ** Data Imports
-import componentData from 'src/@fake-db/components/data'
 
 const Misc = () => {
   return (
@@ -34,18 +33,7 @@ const Misc = () => {
                     <TableCell>Links</TableCell>
                   </TableRow>
                 </TableHead>
-                <TableBody>
-                  {componentData.map((data, index) => (
-                    <TableRow key={index} sx={{ '&:last-of-type .MuiTableCell-root ': { border: 0 } }}>
-                      <TableCell>{data.component}</TableCell>
-                      <TableCell>
-                        <Link href={data.link} target='_blank'>
-                          {data.link}
-                        </Link>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
+                <TableBody></TableBody>
               </Table>
             </TableContainer>
           </CardContent>

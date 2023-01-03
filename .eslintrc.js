@@ -31,6 +31,6 @@ module.exports = {
     // add new line below import
 
     // add new line after each var, const, let declaration
-    'line-comment-position': ['error', { position: 'ignore' }]
+    'line-comment-position': 'off'
   }
 }
