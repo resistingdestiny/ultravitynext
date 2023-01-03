@@ -1,6 +1,6 @@
 import React from 'react'
 import { useRouter } from 'next/router'
-import { requireAuth } from 'util/auth'
+import { requireAuth } from 'src/util/auth'
 
 function SettingsPage(props) {
   const router = useRouter()
