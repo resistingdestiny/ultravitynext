@@ -16,7 +16,7 @@ const FooterContent = () => {
           ❤️
         </Box>
         {` by `}
-        <Link target='_blank' href='https://pixinvent.com/'>
+        <Link target='_blank' href='https://benedictaltier.com/'>
           Benedict
         </Link>
       </Typography>
