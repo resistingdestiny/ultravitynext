@@ -8,8 +8,6 @@ import Button from '@mui/material/Button'
 import Card from '@mui/material/Card'
 import Typography from '@mui/material/Typography'
 import { DataGrid } from '@mui/x-data-grid'
-import useFirebaseAuth from 'src/hooks/useFirebaseAuth.js'
-import { updateItem, deleteItem, useItemsByOwner } from 'src/util/db'
 import QuickSearchToolbar from 'src/views/table/data-grid/QuickSearchToolbar'
 import { DialogViewCard } from 'src/views/pages/dialog-examples/DialogViewCard'
 const CrmTable = props => {
@@ -28,6 +26,18 @@ const CrmTable = props => {
       field: 'name',
       headerName: 'name',
       renderCell: ({ row }) => <Typography variant='body2'>{row.name}</Typography>
+    },
+    {
+      flex: 0.1,
+      minWidth: 100,
+      field: 'chain',
+      headerName: 'chain',
+      sortable: false,
+      renderCell: ({ row }) => {
+        const components = row.id.split('_')
+        const contrain_chain = components[1]
+        return <Typography variant='body2'>{contrain_chain}</Typography>
+      }
     },
     {
       flex: 0.1,
