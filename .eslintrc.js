@@ -27,15 +27,10 @@ module.exports = {
     // add new line above comment
 
     // add new line above return
-    'newline-before-return': 'error',
 
     // add new line below import
 
     // add new line after each var, const, let declaration
-    'padding-line-between-statements': [
-      'error',
-      { blankLine: 'always', prev: ['export'], next: ['*'] },
-      { blankLine: 'always', prev: ['*'], next: ['multiline-const', 'multiline-let', 'multiline-var', 'export'] }
-    ]
+    'line-comment-position': ['error', { position: 'ignore' }]
   }
 }
