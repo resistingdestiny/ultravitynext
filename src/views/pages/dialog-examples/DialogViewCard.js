@@ -44,11 +44,17 @@ const DialogViewCard = props => {
   const [contract, setContract] = useState('')
   const [report, setReport] = useState('')
   const [name, setName] = useState('')
-  const [chain, setChain] = useState('ethereum')
   const [chartData, setChartData] = useState([])
   const [makeReport, setMakeReport] = useState(false)
   const [buttonText, setButtonText] = useState('Add')
+  const [resJson, setResJson] = useState('')
   const [showHistory, setShowHistory] = useState(false)
+
+  const elements = props.rowData.id.split('_')
+  console.log(elements)
+  const contract_address = elements[0]
+  const api_key = elements[2]
+  const chain_name = elements[1]
   const handleAdd = () => {
     updateItem(props.rowData.id, { name: nickname })
     setButtonText('Added')
@@ -77,6 +83,25 @@ const DialogViewCard = props => {
     props.setShowDialogViewCard(false)
     invalidateOwnerItems(authUser?.uid)
   }
+
+  const handleSubmit = async e => {
+    try {
+      let res = await fetch(
+        `https://ultravity.herokuapp.com/api/add_comment?contract_address=${contract_address}&chain=${chain_name}&api_key=${api_key}&comment=${report}`,
+        {
+          method: 'GET'
+        }
+      )
+      let resJson = await res.json()
+      setResJson(resJson) // update the resJson state here
+      if (res.status === 200) {
+      } else {
+      }
+    } catch (err) {
+      console.log(err)
+    }
+    setMakeReport(false)
+  }
   const handleReport = () => {
     if (makeReport) {
       setShow(false)
@@ -85,7 +110,6 @@ const DialogViewCard = props => {
       setMakeReport(true)
     }
   }
-
   const { data: itemHistory, status: itemHistoryStatus, error: itemsHistoryError } = useItem(props.rowData.id)
   console.log(typeof itemHistory)
   useEffect(() => {
@@ -240,15 +264,27 @@ const DialogViewCard = props => {
           )}
         </DialogContent>
         <DialogActions sx={{ pb: { xs: 8, sm: 12.5 }, justifyContent: 'center' }}>
-          <Button variant='outlined' color='primary' onClick={handleHistory}>
-            History
-          </Button>
+          {!makeReport && (
+            <>
+              <Button variant='outlined' color='primary' onClick={handleHistory}>
+                History
+              </Button>
+              <Button variant='outlined' color='error' onClick={handleReport}>
+                Report
+              </Button>
+            </>
+          )}
           <Button variant='outlined' color='primary' onClick={handleClose}>
             Close
           </Button>
-          <Button variant='outlined' color='error' onClick={handleReport}>
-            Report
-          </Button>
+
+          {makeReport && (
+            <Box mb={1}>
+              <Button variant='outlined' color='primary' onClick={handleSubmit}>
+                Submit
+              </Button>
+            </Box>
+          )}
         </DialogActions>
       </Dialog>
     </Card>
