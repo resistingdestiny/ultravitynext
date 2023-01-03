@@ -146,7 +146,7 @@ const AnalyticsDashboard = () => {
             color='primary'
             title='Scored'
             chipText='So Far'
-            icon={<Icon icon='mdi:cart-plus' />}
+            icon={<Icon icon='mdi:file-cloud-outline' />}
           />
         </Grid>
         <Grid item xs={6} md={2}>
@@ -155,7 +155,7 @@ const AnalyticsDashboard = () => {
             color='primary'
             title='Credits'
             chipText='Remaining'
-            icon={<Icon icon='mdi:cart-plus' />}
+            icon={<Icon icon='mdi:wallet-outline' />}
           />
         </Grid>
 
