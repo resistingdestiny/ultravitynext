@@ -36,16 +36,6 @@ const ANALYTICS_IDENTIFY = true
 // Initialize Firebase auth
 const auth = getAuth(firebaseApp)
 
-// Create a `useAuth` hook and `AuthProvider` that enables
-// any component to subscribe to auth and re-render when it changes.
-const authContext = createContext()
-export const useAuth = () => useContext(authContext)
-// This should wrap the app in `src/pages/_app.js`
-export function AuthProvider({ children }) {
-  const auth = useAuthProvider()
-  return <authContext.Provider value={auth}>{children}</authContext.Provider>
-}
-
 // Hook that creates the `auth` object and handles state
 // This is called from `AuthProvider` above (extracted out for readability)
 function useAuthProvider() {

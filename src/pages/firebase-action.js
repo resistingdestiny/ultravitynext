@@ -65,13 +65,11 @@ function FirebaseActionPage(props) {
 
   return (
     <>
-      <PageLoader>
-        {formAlert && (
-          <Alert severity={formAlert.type} sx={{ maxWidth: '500px' }}>
-            {formAlert.message}
-          </Alert>
-        )}
-      </PageLoader>
+      {formAlert && (
+        <Alert severity={formAlert.type} sx={{ maxWidth: '500px' }}>
+          {formAlert.message}
+        </Alert>
+      )}
     </>
   )
 }
