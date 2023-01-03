@@ -1,22 +1,10 @@
 import React from 'react'
 import { useRouter } from 'next/router'
-import LegalSection from 'components/LegalSection'
 
 function LegalPage(props) {
   const router = useRouter()
 
-  return (
-    <>
-      <LegalSection
-        bgColor='default'
-        size='normal'
-        bgImage=''
-        bgImageOpacity={1}
-        section={router.query.section}
-        key={router.query.section}
-      />
-    </>
-  )
+  return <></>
 }
 
 // Tell Next.js to export static files for each page
