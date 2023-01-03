@@ -5,18 +5,7 @@ import { requireAuth } from 'util/auth'
 function SettingsPage(props) {
   const router = useRouter()
 
-  return (
-    <>
-      <SettingsSection
-        bgColor='default'
-        size='medium'
-        bgImage=''
-        bgImageOpacity={1}
-        section={router.query.section}
-        key={router.query.section}
-      />
-    </>
-  )
+  return <></>
 }
 
 // Tell Next.js to export static files for each page
