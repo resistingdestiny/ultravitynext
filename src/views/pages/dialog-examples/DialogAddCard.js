@@ -76,12 +76,15 @@ const DialogAddCard = props => {
   const [show, setShow] = useState(false)
   const [focus, setFocus] = useState()
   const handleBlur = () => setFocus(undefined)
-
+  const handleChainChange = event => {
+    setChain(event.target.value)
+  }
   const handleClose = () => {
     setShow(false)
     setFocus(undefined)
     setResJson(false)
     invalidateOwnerItems(authUser?.uid)
+    setChain('ethereum')
   }
 
   const handleSubmit = async e => {
@@ -202,11 +205,18 @@ const DialogAddCard = props => {
                         defaultValue=''
                         id='demo-simple-select-outlined'
                         labelId='demo-simple-select-outlined-label'
+                        onChange={handleChainChange}
                       >
                         <MenuItem value=''>
                           <em>None</em>
                         </MenuItem>
-                        <MenuItem value={'Ethereum'}>Ethereum</MenuItem>
+                        <MenuItem value={'ethereum'}>Ethereum</MenuItem>
+                        <MenuItem value={'polygon'}>Polygon</MenuItem>
+                        <MenuItem value={'bsc'}>Binance Smart Chain</MenuItem>
+                        <MenuItem value={'avalanche'}>Avalanche C-Chain</MenuItem>
+                        <MenuItem value={'fantom'}>Fantom</MenuItem>
+                        <MenuItem value={'cronos'}>Cronos</MenuItem>
+                        <MenuItem value={'moonbeam'}>Moonbeam</MenuItem>
                       </Select>
                     </FormControl>
                   </Grid>
