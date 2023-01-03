@@ -19,7 +19,7 @@ import OptionsMenu from 'src/@core/components/option-menu'
 import ReactApexcharts from 'src/@core/components/react-apexcharts'
 // ** Demo Components Imports
 import useFirebaseAuth from 'src/hooks/useFirebaseAuth.js'
-import { useItemsByOwner, invalidateOwnerItems } from 'src/util/db'
+import { useItemsByOwner } from 'src/util/db'
 import Table from '@mui/material/Table'
 import TableRow from '@mui/material/TableRow'
 import TableHead from '@mui/material/TableHead'
@@ -138,7 +138,7 @@ const AnalyticsDashboard = () => {
           <AnalyticsCongratulations user_id={authUser ? authUser.uid : 'missing'} signout={signout} />
         </Grid>
         <Grid item md={4} sm={3} xs={12}>
-          <DialogAddCard invalidateOwnerItems={invalidateOwnerItems} user_id={authUser ? authUser.uid : 'missing'} />
+          <DialogAddCard user_id={authUser ? authUser.uid : 'missing'} />
         </Grid>
         <Grid item xs={6} md={2}>
           <CardStatisticsVertical
