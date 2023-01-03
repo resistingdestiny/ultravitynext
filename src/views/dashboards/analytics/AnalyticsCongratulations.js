@@ -49,11 +49,7 @@ const AnalyticsCongratulations = props => {
         <Grid container spacing={6}>
           <Grid item xs={12} sm={12}>
             <Typography variant='h5' sx={{ mb: 4.5 }}>
-              Welcome{' '}
-              <Box component='span' sx={{ fontWeight: 'bold' }}>
-                Benedict
-              </Box>
-              ! 🎉
+              Welcome <Box component='span' sx={{ fontWeight: 'bold' }}></Box>! 🎉
             </Typography>
             <Typography variant='body2'></Typography>
             <Typography sx={{ mb: 4.5 }} variant='body2'>
