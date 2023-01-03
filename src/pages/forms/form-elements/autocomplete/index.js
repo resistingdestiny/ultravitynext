@@ -5,24 +5,6 @@ import Typography from '@mui/material/Typography'
 // ** Custom Components Imports
 import CardSnippet from 'src/@core/components/card-snippet'
 
-// ** Demo Components Imports
-import AutocompleteProps from 'src/views/forms/form-elements/autocomplete/AutocompleteProps'
-import AutocompleteCountry from 'src/views/forms/form-elements/autocomplete/AutocompleteCountry'
-import AutocompleteGrouped from 'src/views/forms/form-elements/autocomplete/AutocompleteGrouped'
-import AutocompleteVariants from 'src/views/forms/form-elements/autocomplete/AutocompleteVariants'
-import AutocompleteFreeSolo from 'src/views/forms/form-elements/autocomplete/AutocompleteFreeSolo'
-import AutocompleteCreatable from 'src/views/forms/form-elements/autocomplete/AutocompleteCreatable'
-import AutocompleteLimitTags from 'src/views/forms/form-elements/autocomplete/AutocompleteLimitTags'
-import AutocompleteSmallSize from 'src/views/forms/form-elements/autocomplete/AutocompleteSmallSize'
-import AutocompleteCheckboxes from 'src/views/forms/form-elements/autocomplete/AutocompleteCheckboxes'
-import AutocompleteCustomInput from 'src/views/forms/form-elements/autocomplete/AutocompleteCustomInput'
-import AutocompleteFixedOptions from 'src/views/forms/form-elements/autocomplete/AutocompleteFixedOptions'
-import AutocompleteCustomFilter from 'src/views/forms/form-elements/autocomplete/AutocompleteCustomFilter'
-import AutocompleteMultipleValues from 'src/views/forms/form-elements/autocomplete/AutocompleteMultipleValues'
-import AutocompleteDisabledOptions from 'src/views/forms/form-elements/autocomplete/AutocompleteDisabledOptions'
-import AutocompleteAsynchronousRequest from 'src/views/forms/form-elements/autocomplete/AutocompleteAsynchronousRequest'
-import AutocompleteControlledUncontrolled from 'src/views/forms/form-elements/autocomplete/AutocompleteControlledUncontrolled'
-
 // ** Source code imports
 import * as source from 'src/views/forms/form-elements/autocomplete/AutocompleteSourceCode'
 
