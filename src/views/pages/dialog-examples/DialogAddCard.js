@@ -249,11 +249,11 @@ const DialogAddCard = props => {
 
                       <TableRow>
                         <TableCell style={{ fontWeight: 'bold' }}>Score</TableCell>
-                        <TableCell>{resJson.score.total_score}</TableCell>
+                        <TableCell>{resJson.score?.total_score}</TableCell>
                       </TableRow>
                       <TableRow>
                         <TableCell style={{ fontWeight: 'bold' }}>Recommendation</TableCell>
-                        <TableCell>{resJson.score.recommendation}</TableCell>
+                        <TableCell>{resJson.score?.recommendation}</TableCell>
                       </TableRow>
                       <TableRow>
                         <TableCell style={{ fontWeight: 'bold' }}>Address</TableCell>
