@@ -100,6 +100,9 @@ const useFirebaseAuth = () => {
       // Pass the user's uid into the createUser function
       createUser(user.uid, { email: user.email, owner: user.uid })
       console.log('user', user)
+      setTimeout(() => {
+        window.location.replace('/dashboards/analytics')
+      }, 1500)
     } catch (error) {
       // Handle errors here
       console.log(error)

@@ -20,6 +20,7 @@ import MuiCard from '@mui/material/Card'
 import MuiFormControlLabel from '@mui/material/FormControlLabel'
 import useFirebaseAuth from 'src/hooks/useFirebaseAuth.js'
 import { useRouter } from 'next/router'
+import Alert from '@mui/material/Alert'
 
 // ** Icon Imports
 import Icon from 'src/@core/components/icon'
@@ -44,6 +45,8 @@ const FormControlLabel = styled(MuiFormControlLabel)(({ theme }) => ({
 }))
 
 const Register = () => {
+  const [formAlert, setFormAlert] = useState({ type: '', message: '' })
+
   const { createUserWithEmailAndPassword } = useFirebaseAuth()
   const router = useRouter()
 
@@ -69,12 +72,20 @@ const Register = () => {
     if (validatePassword()) {
       // Create a new user with email and password using firebase
       createUserWithEmailAndPassword(email, password)
-        .then(res => {})
-        .catch(err => setError(err.message))
+        .then(res => {
+          setFormAlert({
+            type: 'Success',
+            message: 'Registered Successfully. Reloading to Dashboard...'
+          })
+        })
+        .catch(err => {
+          setError(err.message)
+        })
     }
     setEmail('')
     setPassword('')
     setConfirmPassword('')
+    console.log(formAlert)
   }
 
   // ** Hook
@@ -96,6 +107,7 @@ const Register = () => {
             <Typography variant='body2'>Become more informed about your smart contracts</Typography>
           </Box>
           <form noValidate autoComplete='off' onSubmit={register}>
+            {formAlert.type === 'Success' ? <Alert severity='success'>{formAlert.message}</Alert> : null}
             <TextField
               fullWidth
               type='email'
