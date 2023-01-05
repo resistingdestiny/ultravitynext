@@ -5,6 +5,8 @@ import { useTheme } from '@mui/material/styles'
 import CardHeader from '@mui/material/CardHeader'
 import CardContent from '@mui/material/CardContent'
 import Box from '@mui/material/Box'
+import DialogCreateApp from 'src/views/pages/dialog-examples/DialogCreateApp'
+import CustomChip from 'src/@core/components/mui/chip'
 
 // ** Icon Imports
 import Icon from 'src/@core/components/icon'
@@ -181,8 +183,23 @@ const AnalyticsDashboard = () => {
                       </TableHead>
                       <TableBody>
                         <TableRow>
-                          <TableCell style={{ fontWeight: 'bold' }}>Score</TableCell>
-                          <TableCell>{Math.round(score)}</TableCell>
+                          <TableCell
+                            style={{
+                              fontWeight: 'bold'
+                            }}
+                          >
+                            Score
+                          </TableCell>
+
+                          <TableCell>
+                            <CustomChip
+                              size='small'
+                              skin='light'
+                              color={score >= 60 ? 'success' : score >= 30 ? 'warning' : 'error'}
+                              label={Math.round(score)}
+                              sx={{ '& .MuiChip-label': { textTransform: 'capitalize' } }}
+                            />
+                          </TableCell>
                         </TableRow>
 
                         <TableRow>
@@ -202,6 +219,9 @@ const AnalyticsDashboard = () => {
 
         <Grid item xs={12} md={8}>
           <CrmTable contract_data={contract_data} />
+        </Grid>
+        <Grid item md={4} sm={6} xs={12}>
+          <DialogCreateApp />
         </Grid>
       </Grid>
     </ApexChartWrapper>

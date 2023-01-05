@@ -4,6 +4,7 @@ import { useEffect } from 'react'
 // ** MUI Imports
 import Box from '@mui/material/Box'
 import Button from '@mui/material/Button'
+import CustomChip from 'src/@core/components/mui/chip'
 
 import Card from '@mui/material/Card'
 import Typography from '@mui/material/Typography'
@@ -48,12 +49,20 @@ const CrmTable = props => {
     },
     {
       flex: 0.05,
-      minWidth: 50,
+      minWidth: 75,
       sortable: false,
       field: 'Score',
       headerName: 'Score',
       type: 'number',
-      renderCell: ({ row }) => <Typography variant='body2'>{Math.round(Number(row.score))}</Typography>
+      renderCell: ({ row }) => (
+        <CustomChip
+          size='small'
+          skin='light'
+          color={row.score >= 60 ? 'success' : row.score >= 30 ? 'warning' : 'error'}
+          label={Math.round(Number(row.score))}
+          sx={{ '& .MuiChip-label': { textTransform: 'capitalize' } }}
+        />
+      )
     },
     {
       flex: 0.2,

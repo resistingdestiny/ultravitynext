@@ -25,6 +25,7 @@ import TableCell from '@mui/material/TableCell'
 import TableContainer from '@mui/material/TableContainer'
 import { updateItem } from 'src/util/db'
 import ApexLineChart from 'src/views/charts/apex-charts/ApexLineChart'
+import CustomChip from 'src/@core/components/mui/chip'
 
 // ** Styles Import
 import 'react-credit-cards/es/styles-compiled.css'
@@ -164,7 +165,21 @@ const DialogViewCard = props => {
                     </TableRow>
                     <TableRow>
                       <TableCell style={{ fontWeight: 'bold' }}>Score</TableCell>
-                      <TableCell>{props.rowData.row.score}</TableCell>
+                      <TableCell>
+                        <CustomChip
+                          size='small'
+                          skin='light'
+                          color={
+                            props.rowData.row.score >= 60
+                              ? 'success'
+                              : props.rowData.row.score >= 30
+                              ? 'warning'
+                              : 'error'
+                          }
+                          label={props.rowData.row.score}
+                          sx={{ '& .MuiChip-label': { textTransform: 'capitalize' } }}
+                        />
+                      </TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell style={{ fontWeight: 'bold' }}>Description</TableCell>
@@ -197,7 +212,21 @@ const DialogViewCard = props => {
                       typeof itemHistory[historyItem].total_score === 'number' && (
                         <TableBody>
                           <TableRow key={index}>
-                            <TableCell>{itemHistory[historyItem].total_score}</TableCell>
+                            <TableCell>
+                              <CustomChip
+                                size='small'
+                                skin='light'
+                                color={
+                                  itemHistory[historyItem].total_score >= 60
+                                    ? 'success'
+                                    : itemHistory[historyItem].total_score >= 30
+                                    ? 'warning'
+                                    : 'error'
+                                }
+                                label={itemHistory[historyItem].total_score}
+                                sx={{ '& .MuiChip-label': { textTransform: 'capitalize' } }}
+                              />
+                            </TableCell>
                             <TableCell>
                               {dateFormatter.format(new Date(itemHistory[historyItem].timestamp * 1000))}
                             </TableCell>

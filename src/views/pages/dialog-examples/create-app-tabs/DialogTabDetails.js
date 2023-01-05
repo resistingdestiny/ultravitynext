@@ -22,23 +22,23 @@ const TabDetails = () => {
 
   return (
     <div>
-      <TextField fullWidth sx={{ mb: 4 }} label='Application Name' placeholder='Materialize Admin' />
+      <TextField fullWidth sx={{ mb: 4 }} label='Contract Address' placeholder='Materialize Admin' />
       <Typography variant='h6' sx={{ mb: 4 }}>
-        Category
+        Chain
       </Typography>
-      <Box sx={{ mb: 8 }}>
+      <Box sx={{ mb: 4 }}>
         <Box
           onClick={() => setValue('crm')}
           sx={{ mb: 6, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
         >
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <CustomAvatar skin='light' color='info' variant='rounded' sx={{ mr: 3, width: 48, height: 48 }}>
-              <Icon icon='mdi:briefcase-outline' />
+              <Icon icon='mdi:ethereum' />
             </CustomAvatar>
             <div>
-              <Typography sx={{ color: 'text.secondary' }}>CRM Application</Typography>
+              <Typography sx={{ color: 'text.secondary' }}>Ethereum</Typography>
               <Typography variant='caption' sx={{ color: 'text.disabled' }}>
-                Scales with any business
+                Highest Accuracy
               </Typography>
             </div>
           </Box>
@@ -50,13 +50,10 @@ const TabDetails = () => {
         >
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <CustomAvatar skin='light' color='success' variant='rounded' sx={{ mr: 3, width: 48, height: 48 }}>
-              <Icon icon='mdi:cart-outline' />
+              <Icon icon='mdi:database-cog' />
             </CustomAvatar>
             <div>
-              <Typography sx={{ color: 'text.secondary' }}>Ecommerce Platforms</Typography>
-              <Typography variant='caption' sx={{ color: 'text.disabled' }}>
-                Grow Your Business With App
-              </Typography>
+              <Typography sx={{ color: 'text.secondary' }}>Polygon</Typography>
             </div>
           </Box>
           <Radio value='ecommerce' onChange={handleChange} checked={value === 'ecommerce'} />
@@ -67,13 +64,10 @@ const TabDetails = () => {
         >
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
             <CustomAvatar skin='light' color='error' variant='rounded' sx={{ mr: 3, width: 48, height: 48 }}>
-              <Icon icon='mdi:license' />
+              <Icon icon='mdi:database-cog' />
             </CustomAvatar>
             <div>
-              <Typography sx={{ color: 'text.secondary' }}>Online Learning platform</Typography>
-              <Typography variant='caption' sx={{ color: 'text.disabled' }}>
-                Start learning today
-              </Typography>
+              <Typography sx={{ color: 'text.secondary' }}>Binance Smart Chain</Typography>
             </div>
           </Box>
           <Radio value='learning' onChange={handleChange} checked={value === 'learning'} />

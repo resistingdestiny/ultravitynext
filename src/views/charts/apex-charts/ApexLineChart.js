@@ -77,7 +77,7 @@ const ApexLineChart = props => {
         stroke: { color: theme.palette.divider }
       },
       labels: {
-        style: { color: theme.palette.divider }
+        style: { colors: theme.palette.text.disabled }
       },
       categories: Object.keys(itemHistory).map(historyItem =>
         moment(itemHistory[historyItem].timestamp * 1000).format('MM/DD/YYYY HH:mm:ss')
