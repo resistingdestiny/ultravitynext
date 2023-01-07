@@ -1,5 +1,6 @@
 // ** React Imports
 import { useState } from 'react'
+import Alert from '@mui/material/Alert'
 
 // ** MUI Imports
 import Box from '@mui/material/Box'
@@ -13,7 +14,7 @@ import Icon from 'src/@core/components/icon'
 // ** Custom Avatar Component
 import CustomAvatar from 'src/@core/components/mui/avatar'
 
-const TabDetails = () => {
+const TabDetails = props => {
   const [value, setValue] = useState('ecommerce')
 
   const handleChange = event => {
@@ -22,13 +23,23 @@ const TabDetails = () => {
 
   return (
     <div>
-      <TextField fullWidth sx={{ mb: 4 }} label='Contract Address' placeholder='Materialize Admin' />
+      <Box sx={{ mb: 4 }}>
+        {props.formAlert.type === 'pending' ? <Alert severity='info'>{props.formAlert.message}</Alert> : null}
+      </Box>
+      <TextField
+        fullWidth
+        sx={{ mb: 4 }}
+        label='Contract Address'
+        value={props.contract}
+        placeholder='Contract Address'
+        onChange={e => props.setContract(e.target.value)}
+      />
       <Typography variant='h6' sx={{ mb: 4 }}>
         Chain
       </Typography>
       <Box sx={{ mb: 4 }}>
         <Box
-          onClick={() => setValue('crm')}
+          onClick={() => props.setChain('ethereum')}
           sx={{ mb: 6, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
         >
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -42,10 +53,10 @@ const TabDetails = () => {
               </Typography>
             </div>
           </Box>
-          <Radio value='crm' onChange={handleChange} checked={value === 'crm'} />
+          <Radio value='ethereum' onChange={handleChange} checked={value === 'ethereum'} />
         </Box>
         <Box
-          onClick={() => setValue('ecommerce')}
+          onClick={() => props.setChain('polygon')}
           sx={{ mb: 6, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
         >
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -56,10 +67,10 @@ const TabDetails = () => {
               <Typography sx={{ color: 'text.secondary' }}>Polygon</Typography>
             </div>
           </Box>
-          <Radio value='ecommerce' onChange={handleChange} checked={value === 'ecommerce'} />
+          <Radio value='polygon' onChange={handleChange} checked={value === 'polygon'} />
         </Box>
         <Box
-          onClick={() => setValue('learning')}
+          onClick={() => props.setChain('bsc')}
           sx={{ cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
         >
           <Box sx={{ display: 'flex', alignItems: 'center' }}>
@@ -70,7 +81,7 @@ const TabDetails = () => {
               <Typography sx={{ color: 'text.secondary' }}>Binance Smart Chain</Typography>
             </div>
           </Box>
-          <Radio value='learning' onChange={handleChange} checked={value === 'learning'} />
+          <Radio value='bsc' onChange={handleChange} checked={value === 'bsc'} />
         </Box>
       </Box>
     </div>

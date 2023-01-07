@@ -221,7 +221,7 @@ const AnalyticsDashboard = () => {
           <CrmTable contract_data={contract_data} />
         </Grid>
         <Grid item md={4} sm={6} xs={12}>
-          <DialogCreateApp />
+          <DialogCreateApp user_id={authUser ? authUser.uid : 'missing'} />
         </Grid>
       </Grid>
     </ApexChartWrapper>
