@@ -1,6 +1,6 @@
 // ** React Imports
 import { useState, useEffect, forwardRef } from 'react'
-import { useItem } from 'src/util/db'
+import { useItem, useContract } from 'src/util/db'
 import { useQueryClient } from 'react-query'
 
 // ** MUI Imports
@@ -52,7 +52,6 @@ const DialogViewCard = props => {
   const [showHistory, setShowHistory] = useState(false)
 
   const elements = props.rowData.id.split('_')
-  console.log(elements)
   const contract_address = elements[0]
   const api_key = elements[2]
   const chain_name = elements[1]
@@ -112,7 +111,23 @@ const DialogViewCard = props => {
     }
   }
   const { data: itemHistory, status: itemHistoryStatus, error: itemsHistoryError } = useItem(props.rowData.id)
-  console.log(typeof itemHistory)
+  const {
+    data: contractInfo,
+    status: contractInfoStatus,
+    error: contractInfoError
+  } = useContract(contract_address + '_' + chain_name)
+
+  // Filter the comments t/o only include ones created by the current user
+  const reportingComments = {}
+  if (contractInfo?.reporting_comments) {
+    const keys = Object.keys(contractInfo.reporting_comments)
+    keys.forEach(key => {
+      if (key.startsWith(`${authUser?.uid}_`)) {
+        reportingComments[key] = contractInfo.reporting_comments[key]
+      }
+    })
+  }
+
   useEffect(() => {
     setChartData([
       props.rowData.row.longevity,
@@ -273,6 +288,25 @@ const DialogViewCard = props => {
                         label={props.rowData.id.substr(0, 42)}
                       />
                     </Grid>
+
+                    <TableContainer component={Paper}>
+                      <Table>
+                        <TableHead>
+                          <TableRow>
+                            <TableCell>Reporting Comment</TableCell>
+                            <TableCell>Timestamp</TableCell>
+                          </TableRow>
+                        </TableHead>
+                        <TableBody>
+                          {Object.keys(reportingComments).map((key, index) => (
+                            <TableRow key={index}>
+                              <TableCell>{reportingComments[key].comment}</TableCell>
+                              <TableCell>{reportingComments[key].timestamp}</TableCell>
+                            </TableRow>
+                          ))}
+                        </TableBody>
+                      </Table>
+                    </TableContainer>
                     <Grid item xs={12} sx={{ mt: 7 }}>
                       <TextField
                         variant='outlined'

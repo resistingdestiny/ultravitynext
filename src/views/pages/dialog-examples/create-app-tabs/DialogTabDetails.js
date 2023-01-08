@@ -37,53 +37,114 @@ const TabDetails = props => {
       <Typography variant='h6' sx={{ mb: 4 }}>
         Chain
       </Typography>
-      <Box sx={{ mb: 4 }}>
-        <Box
-          onClick={() => props.setChain('ethereum')}
-          sx={{ mb: 6, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
-        >
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <CustomAvatar skin='light' color='info' variant='rounded' sx={{ mr: 3, width: 48, height: 48 }}>
-              <Icon icon='mdi:ethereum' />
-            </CustomAvatar>
-            <div>
-              <Typography sx={{ color: 'text.secondary' }}>Ethereum</Typography>
-              <Typography variant='caption' sx={{ color: 'text.disabled' }}>
-                Highest Accuracy
-              </Typography>
-            </div>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gridGap: 4 }}>
+        <Box sx={{ mb: 4 }}>
+          <Box
+            onClick={() => props.setChain('ethereum')}
+            sx={{ mb: 6, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
+          >
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <CustomAvatar skin='light' color='info' variant='rounded' sx={{ mr: 3, width: 48, height: 48 }}>
+                <Icon icon='mdi:ethereum' />
+              </CustomAvatar>
+              <div>
+                <Typography sx={{ color: 'text.secondary' }}>Ethereum</Typography>
+                <Typography variant='caption' sx={{ color: 'text.disabled' }}>
+                  Highest Accuracy
+                </Typography>
+              </div>
+            </Box>
+            <Radio value='ethereum' onChange={handleChange} checked={value === 'ethereum'} />
           </Box>
-          <Radio value='ethereum' onChange={handleChange} checked={value === 'ethereum'} />
-        </Box>
-        <Box
-          onClick={() => props.setChain('polygon')}
-          sx={{ mb: 6, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
-        >
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <CustomAvatar skin='light' color='success' variant='rounded' sx={{ mr: 3, width: 48, height: 48 }}>
-              <Icon icon='mdi:database-cog' />
-            </CustomAvatar>
-            <div>
-              <Typography sx={{ color: 'text.secondary' }}>Polygon</Typography>
-            </div>
+          <Box
+            onClick={() => props.setChain('polygon')}
+            sx={{ mb: 6, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
+          >
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <CustomAvatar skin='light' color='info' variant='rounded' sx={{ mr: 3, width: 48, height: 48 }}>
+                <Icon icon='mdi:database-cog' />
+              </CustomAvatar>
+              <div>
+                <Typography sx={{ color: 'text.secondary' }}>Polygon</Typography>
+              </div>
+            </Box>
+            <Radio value='polygon' onChange={handleChange} checked={value === 'polygon'} />
           </Box>
-          <Radio value='polygon' onChange={handleChange} checked={value === 'polygon'} />
-        </Box>
-        <Box
-          onClick={() => props.setChain('bsc')}
-          sx={{ cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
-        >
-          <Box sx={{ display: 'flex', alignItems: 'center' }}>
-            <CustomAvatar skin='light' color='error' variant='rounded' sx={{ mr: 3, width: 48, height: 48 }}>
-              <Icon icon='mdi:database-cog' />
-            </CustomAvatar>
-            <div>
-              <Typography sx={{ color: 'text.secondary' }}>Binance Smart Chain</Typography>
-            </div>
+          <Box
+            onClick={() => props.setChain('bsc')}
+            sx={{ mb: 6, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
+          >
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <CustomAvatar skin='light' color='info' variant='rounded' sx={{ mr: 3, width: 48, height: 48 }}>
+                <Icon icon='mdi:database-cog' />
+              </CustomAvatar>
+              <div>
+                <Typography sx={{ color: 'text.secondary' }}>Binance Smart Chain</Typography>
+              </div>
+            </Box>
+            <Radio value='bsc' onChange={handleChange} checked={value === 'bsc'} />
           </Box>
-          <Radio value='bsc' onChange={handleChange} checked={value === 'bsc'} />
+
+          <Box
+            onClick={() => props.setChain('avalanche')}
+            sx={{ mb: 6, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
+          >
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <CustomAvatar skin='light' color='info' variant='rounded' sx={{ mr: 3, width: 48, height: 48 }}>
+                <Icon icon='mdi:database-cog' />
+              </CustomAvatar>
+              <div>
+                <Typography sx={{ color: 'text.secondary' }}>Avalanche C-Chain</Typography>
+              </div>
+            </Box>
+            <Radio value='avalanche' onChange={handleChange} checked={value === 'avalanche'} />
+          </Box>
         </Box>
-      </Box>
+        <Box sx={{}}>
+          <Box
+            onClick={() => props.setChain('fantom')}
+            sx={{ mb: 6, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
+          >
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <CustomAvatar skin='light' color='info' variant='rounded' sx={{ mr: 3, width: 48, height: 48 }}>
+                <Icon icon='mdi:database-cog' />
+              </CustomAvatar>
+              <div>
+                <Typography sx={{ color: 'text.secondary' }}>Fantom</Typography>
+              </div>
+            </Box>
+            <Radio value='fantom' onChange={handleChange} checked={value === 'fantom'} />
+          </Box>
+          <Box
+            onClick={() => props.setChain('cronos')}
+            sx={{ mb: 6, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
+          >
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <CustomAvatar skin='light' color='info' variant='rounded' sx={{ mr: 3, width: 48, height: 48 }}>
+                <Icon icon='mdi:database-cog' />
+              </CustomAvatar>
+              <div>
+                <Typography sx={{ color: 'text.secondary' }}>Cronos</Typography>
+              </div>
+            </Box>
+            <Radio value='cronos' onChange={handleChange} checked={value === 'fantom'} />
+          </Box>
+          <Box
+            onClick={() => props.setChain('moonbeam')}
+            sx={{ mb: 6, cursor: 'pointer', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}
+          >
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+              <CustomAvatar skin='light' color='info' variant='rounded' sx={{ mr: 3, width: 48, height: 48 }}>
+                <Icon icon='mdi:database-cog' />
+              </CustomAvatar>
+              <div>
+                <Typography sx={{ color: 'text.secondary' }}>Moonbeam</Typography>
+              </div>
+            </Box>
+            <Radio value='moonbeam' onChange={handleChange} checked={value === 'fantom'} />
+          </Box>
+        </Box>
+      </div>
     </div>
   )
 }

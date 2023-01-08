@@ -67,6 +67,15 @@ export function useItem(id) {
   )
 }
 
+// Subscribe to contract reports
+export function useContract(id) {
+  return useQuery(
+    ['contract', { id }],
+    createQuery(() => doc(db, 'contracts', id)),
+    { enabled: !!id }
+  )
+}
+
 // Fetch item data once
 export function useItemOnce(id) {
   return useQuery(
