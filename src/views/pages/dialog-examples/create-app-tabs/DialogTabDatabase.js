@@ -34,9 +34,9 @@ const TabDatabase = props => {
             </MenuItem>
           ))}
         </Select>
-        {props.functionArgs.map(arg => (
-          <TextField fullWidth sx={{ mb: 4 }} label={arg} />
-        ))}
+        {Array.isArray(props.functionArgs)
+          ? props.functionArgs.map(arg => <TextField fullWidth sx={{ mb: 4 }} label={arg} />)
+          : null}
         <TextField fullWidth sx={{ mb: 4 }} label='Add Liquidity ETH' />
         <TextField fullWidth sx={{ mb: 4 }} label='Token (Address)' />
         <TextField fullWidth sx={{ mb: 4 }} label='Token Amount Desired' />

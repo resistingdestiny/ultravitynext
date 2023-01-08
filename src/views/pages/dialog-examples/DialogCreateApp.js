@@ -294,9 +294,9 @@ const DialogCreateApp = props => {
     //from a drop down and then add the arguments in the corresponding fields that build dynamically
     //Function names can be obtained from the contract ABI - see print example above
     const amount = 10 //web3.utils.toWei('1', 'ether'); possible to convert to other units here
-
+    const amountFunction = [amount]
     //Encode function call - required as data argument for raw transaction
-    const encodedFunctionCall = contract.methods[functionName](...amount).encodeABI()
+    const encodedFunctionCall = contract.methods[functionName](...amountFunction).encodeABI()
     console.log(encodedFunctionCall)
 
     //Build transaction object
@@ -319,6 +319,7 @@ const DialogCreateApp = props => {
     }
     console.log(rawTransaction)
   }
+
   //////////////// end of web3
   const { direction } = settings
   const queryClient = useQueryClient()
