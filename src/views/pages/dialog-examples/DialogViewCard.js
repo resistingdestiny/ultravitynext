@@ -81,7 +81,6 @@ const DialogViewCard = props => {
   const handleClose = () => {
     setShow(false)
     props.setShowDialogViewCard(false)
-    invalidateOwnerItems(authUser?.uid)
   }
 
   const handleSubmit = async e => {
@@ -301,7 +300,9 @@ const DialogViewCard = props => {
                           {Object.keys(reportingComments).map((key, index) => (
                             <TableRow key={index}>
                               <TableCell>{reportingComments[key].comment}</TableCell>
-                              <TableCell>{reportingComments[key].timestamp}</TableCell>
+                              <TableCell>
+                                {dateFormatter.format(new Date(reportingComments[key].timestamp * 1000))}
+                              </TableCell>
                             </TableRow>
                           ))}
                         </TableBody>
