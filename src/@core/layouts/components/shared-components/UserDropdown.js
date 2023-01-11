@@ -91,10 +91,10 @@ const UserDropdown = props => {
         }}
       >
         <Avatar
-          alt='Benedict Altier'
+          alt='Free User'
           onClick={handleDropdownOpen}
           sx={{ width: 40, height: 40 }}
-          src='https://media-exp1.licdn.com/dms/image/C4D03AQEVub6EOxlsqg/profile-displayphoto-shrink_800_800/0/1639416710625?e=2147483647&v=beta&t=boMXoQL4M9MxdHhnm58RNDjT-sC8UwtcI7ArXP4BNww'
+          src='https://cdn-icons-png.flaticon.com/512/1177/1177568.png'
         />
       </Badge>
       <Menu

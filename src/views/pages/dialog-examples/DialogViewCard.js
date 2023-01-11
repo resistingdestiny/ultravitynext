@@ -26,7 +26,10 @@ import TableContainer from '@mui/material/TableContainer'
 import { updateItem } from 'src/util/db'
 import ApexLineChart from 'src/views/charts/apex-charts/ApexLineChart'
 import CustomChip from 'src/@core/components/mui/chip'
-
+import Tab from '@mui/material/Tab'
+import TabList from '@mui/lab/TabList'
+import TabContext from '@mui/lab/TabContext'
+import TabPanel from '@mui/lab/TabPanel'
 // ** Styles Import
 import 'react-credit-cards/es/styles-compiled.css'
 import useFirebaseAuth from 'src/hooks/useFirebaseAuth.js'
@@ -76,6 +79,11 @@ const DialogViewCard = props => {
   const invalidateOwnerItems = owner => {
     queryClient.invalidateQueries(['items', { owner }])
     queryClient.invalidateQueries(['latestItemByOwner', { owner }])
+  }
+  const [value, setValue] = useState('1')
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue)
   }
 
   const handleClose = () => {
@@ -129,10 +137,10 @@ const DialogViewCard = props => {
 
   useEffect(() => {
     setChartData([
-      props.rowData.row.longevity,
-      props.rowData.row.reliability,
-      props.rowData.row.credibility,
       props.rowData.row.popularity,
+      props.rowData.row.credibility,
+      props.rowData.row.reliability,
+      props.rowData.row.longevity,
       props.rowData.row.immutability
     ])
   }, [])
@@ -141,7 +149,7 @@ const DialogViewCard = props => {
       <Dialog
         fullWidth
         open={props.showDialogViewCard}
-        maxWidth='sm'
+        maxWidth='md'
         scroll='body'
         onClose={handleClose}
         onBackdropClick={handleClose}
@@ -158,7 +166,50 @@ const DialogViewCard = props => {
           </Box>
           {!makeReport && !showHistory && (
             <Box>
-              <ViewContract chartData={chartData} />
+              <TabContext value={value}>
+                <TabList variant='fullWidth' onChange={handleChange} aria-label='full width tabs example'>
+                  <Tab value='1' label='Radar Chart' />
+                  <Tab value='2' label='Table' />
+                </TabList>
+                <TabPanel value='1'>
+                  <ViewContract chartData={chartData} />
+                </TabPanel>
+                <TabPanel value='2'>
+                  <TableContainer component={Paper}>
+                    <Table>
+                      <TableHead>
+                        <TableRow>
+                          <TableCell variant='head'></TableCell>
+                          <TableCell variant='head'></TableCell>
+                        </TableRow>
+                      </TableHead>
+                      <TableBody>
+                        <TableRow>
+                          <TableCell style={{ fontWeight: 'bold' }}>Popularity</TableCell>
+                          <TableCell>{chartData[0]}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell style={{ fontWeight: 'bold' }}>Credibility</TableCell>
+                          <TableCell>{chartData[1]}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell style={{ fontWeight: 'bold' }}>Reliability</TableCell>
+                          <TableCell>{chartData[2]}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell style={{ fontWeight: 'bold' }}>Longevity</TableCell>
+                          <TableCell>{chartData[3]}</TableCell>
+                        </TableRow>
+                        <TableRow>
+                          <TableCell style={{ fontWeight: 'bold' }}>Immutability</TableCell>
+                          <TableCell>{chartData[4]}</TableCell>
+                        </TableRow>
+                      </TableBody>
+                    </Table>
+                  </TableContainer>
+                </TabPanel>
+              </TabContext>
+
               <TableContainer component={Paper}>
                 <Table>
                   <TableHead>
@@ -171,8 +222,13 @@ const DialogViewCard = props => {
                     <TableRow>
                       <TableCell style={{ fontWeight: 'bold' }}>Name</TableCell>
                       <TableCell>
-                        <TextField size='small' value={nickname} onChange={event => setNickname(event.target.value)} />
-                        <Button variant='outlined' color='secondary' onClick={handleAdd}>
+                        <TextField
+                          style={{ width: '300px' }}
+                          size='small'
+                          value={nickname}
+                          onChange={event => setNickname(event.target.value)}
+                        />
+                        <Button style={{ marginLeft: '10px' }} variant='outlined' color='secondary' onClick={handleAdd}>
                           {props.rowData.row.name ? 'Update' : buttonText}
                         </Button>
                       </TableCell>

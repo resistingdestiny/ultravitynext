@@ -1,5 +1,6 @@
 // ** React Imports
 import { useState, forwardRef } from 'react'
+
 //Load web3 module
 var Web3 = require('web3')
 // ** MUI Imports
@@ -86,6 +87,11 @@ const DialogCreateApp = props => {
 
   const api_key = props.user_id
 
+  const [value, setValue] = useState('1')
+
+  const handleChange = (event, newValue) => {
+    setValue(newValue)
+  }
   const contractAddress = contract
   const apiKey = api_key
   // ** States
@@ -358,7 +364,7 @@ const DialogCreateApp = props => {
       setPending(true)
 
       setChartData([
-        resJson.score.radar_chart.immutability,
+        resJson.score.radar_chart.popularity,
         resJson.score.radar_chart.credibility,
         resJson.score.radar_chart.reliability,
         resJson.score.radar_chart.longevity,
@@ -561,12 +567,53 @@ const DialogCreateApp = props => {
               </TabPanel>
 
               <TabPanel value='submitTab' sx={{ flexGrow: 1 }}>
-                <Box sx={{ textAlign: 'center' }}>
+                <Box sx={{ textAlign: 'center', mb: 2 }}>
                   <Typography variant='h6'>View Results</Typography>
-                  <Typography variant='body2'>Report results here</Typography>
                 </Box>
                 <Grid>
-                  <ViewContract chartData={chartData} />
+                  <TabContext value={value}>
+                    <TabList variant='fullWidth' onChange={handleChange} aria-label='full width tabs example'>
+                      <Tab value='1' label='Radar Chart' />
+                      <Tab value='2' label='Table' />
+                    </TabList>
+                    <TabPanel value='1'>
+                      <ViewContract chartData={chartData} />
+                    </TabPanel>
+                    <TabPanel value='2'>
+                      <TableContainer component={Paper}>
+                        <Table>
+                          <TableHead>
+                            <TableRow>
+                              <TableCell variant='head'></TableCell>
+                              <TableCell variant='head'></TableCell>
+                            </TableRow>
+                          </TableHead>
+                          <TableBody>
+                            <TableRow>
+                              <TableCell style={{ fontWeight: 'bold' }}>Popularity</TableCell>
+                              <TableCell>{chartData[0]}</TableCell>
+                            </TableRow>
+                            <TableRow>
+                              <TableCell style={{ fontWeight: 'bold' }}>Credibility</TableCell>
+                              <TableCell>{chartData[1]}</TableCell>
+                            </TableRow>
+                            <TableRow>
+                              <TableCell style={{ fontWeight: 'bold' }}>Reliability</TableCell>
+                              <TableCell>{chartData[2]}</TableCell>
+                            </TableRow>
+                            <TableRow>
+                              <TableCell style={{ fontWeight: 'bold' }}>Longevity</TableCell>
+                              <TableCell>{chartData[3]}</TableCell>
+                            </TableRow>
+                            <TableRow>
+                              <TableCell style={{ fontWeight: 'bold' }}>Immutability</TableCell>
+                              <TableCell>{chartData[4]}</TableCell>
+                            </TableRow>
+                          </TableBody>
+                        </Table>
+                      </TableContainer>
+                    </TabPanel>
+                  </TabContext>
 
                   <Box>
                     <TableContainer component={Paper}>
