@@ -139,9 +139,10 @@ const AnalyticsDashboard = () => {
         <Grid item xs={12} md={4}>
           <AnalyticsCongratulations user_id={authUser ? authUser.uid : 'missing'} signout={signout} />
         </Grid>
-        <Grid item md={4} sm={3} xs={12}>
-          <DialogAddCard user_id={authUser ? authUser.uid : 'missing'} />
+        <Grid item md={4} sm={6} xs={12}>
+          <DialogCreateApp user_id={authUser ? authUser.uid : 'missing'} />
         </Grid>
+
         <Grid item xs={6} md={2}>
           <CardStatisticsVertical
             stats={items?.length}
@@ -219,9 +220,6 @@ const AnalyticsDashboard = () => {
 
         <Grid item xs={12} md={8}>
           <CrmTable contract_data={contract_data} />
-        </Grid>
-        <Grid item md={4} sm={6} xs={12}>
-          <DialogCreateApp user_id={authUser ? authUser.uid : 'missing'} />
         </Grid>
       </Grid>
     </ApexChartWrapper>

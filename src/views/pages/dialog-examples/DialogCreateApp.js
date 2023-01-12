@@ -322,13 +322,14 @@ const DialogCreateApp = props => {
       <CardContent sx={{ textAlign: 'center', '& svg': { mb: 2 } }}>
         <Icon icon='mdi:cube-outline' fontSize='2rem' />
         <Typography variant='h6' sx={{ mb: 4 }}>
-          Advanced Contracts
+          Add Contract
         </Typography>
         <Typography sx={{ mb: 3 }}>
-          Provide detailed transaction information to get advanced risk modelling and simulation.{' '}
+          Quickly add a new contract or provide detailed transaction information to get advanced risk modelling and
+          simulation.{' '}
         </Typography>
         <Button variant='contained' onClick={() => setShow(true)}>
-          Show
+          Add
         </Button>
       </CardContent>
       <Dialog
