@@ -80,11 +80,12 @@ const DialogCreateApp = props => {
   const [chartData, setChartData] = useState([])
   const [resJson, setResJson] = useState(false) // add this line
   const [contractMethods, setContractMethods] = useState('')
-  const [contract, setContract] = useState('')
+  const [contract, setContract] = useState('0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45')
   const [chain, setChain] = useState('ethereum')
-  const [functionName, setFunctionName] = useState('withdraw')
-  const [FunctionArgs, setFunctionArgs] = useState('amount')
-
+  const [functionName, setFunctionName] = useState('')
+  const [functionArgs, setFunctionArgs] = useState('amount')
+  const [contractObject, setContractObject] = useState('')
+  const [functionABI, setFunctionABI] = useState('')
   const api_key = props.user_id
 
   const [value, setValue] = useState('1')
@@ -130,171 +131,42 @@ const DialogCreateApp = props => {
     //Get abi
     var contractABI = await fetchContractABI(baseURL, contractAddress, chain, apiKey)
 
-    //Etherscan currently blocks requests from ultravity server --> overwrite ABI with local copy
-    contractABI = [
-      {
-        constant: true,
-        inputs: [],
-        name: 'name',
-        outputs: [{ name: '', type: 'string' }],
-        payable: false,
-        stateMutability: 'view',
-        type: 'function'
-      },
-      {
-        constant: false,
-        inputs: [
-          { name: 'guy', type: 'address' },
-          { name: 'wad', type: 'uint256' }
-        ],
-        name: 'approve',
-        outputs: [{ name: '', type: 'bool' }],
-        payable: false,
-        stateMutability: 'nonpayable',
-        type: 'function'
-      },
-      {
-        constant: true,
-        inputs: [],
-        name: 'totalSupply',
-        outputs: [{ name: '', type: 'uint256' }],
-        payable: false,
-        stateMutability: 'view',
-        type: 'function'
-      },
-      {
-        constant: false,
-        inputs: [
-          { name: 'src', type: 'address' },
-          { name: 'dst', type: 'address' },
-          { name: 'wad', type: 'uint256' }
-        ],
-        name: 'transferFrom',
-        outputs: [{ name: '', type: 'bool' }],
-        payable: false,
-        stateMutability: 'nonpayable',
-        type: 'function'
-      },
-      {
-        constant: false,
-        inputs: [{ name: 'wad', type: 'uint256' }],
-        name: 'withdraw',
-        outputs: [],
-        payable: false,
-        stateMutability: 'nonpayable',
-        type: 'function'
-      },
-      {
-        constant: true,
-        inputs: [],
-        name: 'decimals',
-        outputs: [{ name: '', type: 'uint8' }],
-        payable: false,
-        stateMutability: 'view',
-        type: 'function'
-      },
-      {
-        constant: true,
-        inputs: [{ name: '', type: 'address' }],
-        name: 'balanceOf',
-        outputs: [{ name: '', type: 'uint256' }],
-        payable: false,
-        stateMutability: 'view',
-        type: 'function'
-      },
-      {
-        constant: true,
-        inputs: [],
-        name: 'symbol',
-        outputs: [{ name: '', type: 'string' }],
-        payable: false,
-        stateMutability: 'view',
-        type: 'function'
-      },
-      {
-        constant: false,
-        inputs: [
-          { name: 'dst', type: 'address' },
-          { name: 'wad', type: 'uint256' }
-        ],
-        name: 'transfer',
-        outputs: [{ name: '', type: 'bool' }],
-        payable: false,
-        stateMutability: 'nonpayable',
-        type: 'function'
-      },
-      {
-        constant: false,
-        inputs: [],
-        name: 'deposit',
-        outputs: [],
-        payable: true,
-        stateMutability: 'payable',
-        type: 'function'
-      },
-      {
-        constant: true,
-        inputs: [
-          { name: '', type: 'address' },
-          { name: '', type: 'address' }
-        ],
-        name: 'allowance',
-        outputs: [{ name: '', type: 'uint256' }],
-        payable: false,
-        stateMutability: 'view',
-        type: 'function'
-      },
-      { payable: true, stateMutability: 'payable', type: 'fallback' },
-      {
-        anonymous: false,
-        inputs: [
-          { indexed: true, name: 'src', type: 'address' },
-          { indexed: true, name: 'guy', type: 'address' },
-          { indexed: false, name: 'wad', type: 'uint256' }
-        ],
-        name: 'Approval',
-        type: 'event'
-      },
-      {
-        anonymous: false,
-        inputs: [
-          { indexed: true, name: 'src', type: 'address' },
-          { indexed: true, name: 'dst', type: 'address' },
-          { indexed: false, name: 'wad', type: 'uint256' }
-        ],
-        name: 'Transfer',
-        type: 'event'
-      },
-      {
-        anonymous: false,
-        inputs: [
-          { indexed: true, name: 'dst', type: 'address' },
-          { indexed: false, name: 'wad', type: 'uint256' }
-        ],
-        name: 'Deposit',
-        type: 'event'
-      },
-      {
-        anonymous: false,
-        inputs: [
-          { indexed: true, name: 'src', type: 'address' },
-          { indexed: false, name: 'wad', type: 'uint256' }
-        ],
-        name: 'Withdrawal',
-        type: 'event'
-      }
-    ]
-
     //Init contract object
     const contract = new web3.eth.Contract(contractABI, contractAddress)
-
+    setContractObject(contract)
+    console.log(contract._jsonInterface)
+    //console.log(contractABI)
     //Print all functions in contract - required for drop down menu on front end
-    console.log(contract.methods)
-    setContractMethods(contract.methods)
-    const functionABI = contractABI.find(abi => abi.name === functionName)
-    const functionArgs = functionABI.inputs.map(arg => arg.name)
-    setFunctionArgs(functionArgs)
-    console.log(functionArgs)
+    setContractMethods(
+      Array.from(
+        new Set(
+          contract._jsonInterface
+            .filter(f => f.stateMutability !== 'view' && f.stateMutability !== 'nonpayable')
+            .map(f => f.name)
+        )
+      )
+    )
+    console.log(contractMethods)
+    /*   const functionABI = contractABI.find(abi => abi.name === functionName)
+    const functionArgs = contractMethods.map(method => {
+      const functionABI = contract._jsonInterface.find(abi => abi.name === method)
+      return functionABI.inputs
+    })
+    console.log(functionArgs) */
+    setFunctionABI(contract._jsonInterface.find(abi => abi.name === functionName))
+    if (functionABI?.inputs !== undefined) {
+      setFunctionArgs(functionABI.inputs)
+      console.log(functionArgs)
+    }
+    /*    if (functionABI?.inputs !== undefined) {
+      const functionArgs = functionABI.inputs.map(arg => arg.name)
+      setFunctionArgs(functionArgs)
+      console.log(functionArgs)
+    } else {
+      console.log('Function inputs are not defined.')
+    }
+
+    console.log(functionArgs) */
 
     //Define function name and variables - on the front end users should select the function name
     //from a drop down and then add the arguments in the corresponding fields that build dynamically
@@ -302,14 +174,14 @@ const DialogCreateApp = props => {
     const amount = 10 //web3.utils.toWei('1', 'ether'); possible to convert to other units here
     const amountFunction = [amount]
     //Encode function call - required as data argument for raw transaction
-    const encodedFunctionCall = contract.methods[functionName](...amountFunction).encodeABI()
-    console.log(encodedFunctionCall)
+    //const encodedFunctionCall = contract.methods[functionName](...amountFunction).encodeABI()
+    //console.log(encodedFunctionCall)
 
     //Build transaction object
     const from = '0x68b3465833fb72A70ecDF485E0e4C7bD8665Fc45' //user account
     const value = '10'
     const to = contract
-    const data = encodedFunctionCall
+    // const data = encodedFunctionCall
     const gas = 1000000
     // const gasPrice = '1000000000'; // 1 gwei // not required for ultravity api
 
@@ -319,7 +191,6 @@ const DialogCreateApp = props => {
     const rawTransaction = {
       from: from,
       to: to,
-      data: data,
       gas: gas,
       value: value
     }
@@ -341,6 +212,13 @@ const DialogCreateApp = props => {
     setContract('')
   }
 
+  const updateFunctions = () => {
+    setFunctionABI(contractObject._jsonInterface.find(abi => abi.name === functionName))
+    if (functionABI?.inputs !== undefined) {
+      setFunctionArgs(functionABI.inputs)
+      console.log(functionArgs)
+    }
+  }
   const handleAdvanced = () => {
     main()
     setActiveTab('DatabaseTab')
@@ -561,7 +439,8 @@ const DialogCreateApp = props => {
                   contract={contract}
                   chain={chain}
                   api_key={api_key}
-                  functionArgs={FunctionArgs}
+                  functionArgs={functionArgs}
+                  updateFunctions={updateFunctions}
                 />
                 {renderTabFooter()}
               </TabPanel>
