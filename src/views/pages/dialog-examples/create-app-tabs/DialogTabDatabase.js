@@ -66,8 +66,6 @@ const TabDatabase = props => {
         {/* {Array.isArray(props.FunctionArgs)
           ? props.functionArgs.map((arg, index) => <TextField key={index} fullWidth sx={{ mb: 4 }} label={arg} />)
           : null} */}
-        <TextField fullWidth sx={{ mb: 4 }} label='Add Liquidity ETH' />
-        <TextField fullWidth sx={{ mb: 4 }} label='Token (Address)' />
         {/*  <TextField fullWidth sx={{ mb: 4 }} label='Token Amount Desired' />
         <TextField fullWidth sx={{ mb: 4 }} label='Minimum Token Amount' />
         <TextField fullWidth sx={{ mb: 4 }} label='Minimum ETH amount' /> */}
